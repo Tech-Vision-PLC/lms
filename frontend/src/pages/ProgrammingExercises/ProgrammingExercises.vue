@@ -1,5 +1,11 @@
 <template>
+	<DSAProblems v-if="source === 'dsa'">
+		<template #tabs
+			><TabButtons v-if="canManage" v-model="source" :options="sources"
+		/></template>
+	</DSAProblems>
 	<ListPage
+		v-else
 		:breadcrumbs="breadcrumbs"
 		:title="__('{0} Exercises').format(totalExercises.data || 0)"
 		layout="list"
@@ -42,6 +48,7 @@
 		</template>
 
 		<template #filters>
+			<TabButtons v-if="dsaEnabled()" v-model="source" :options="sources" />
 			<FormControl
 				v-model="titleFilter"
 				:placeholder="__('Search')"
@@ -93,6 +100,7 @@ import {
 	FormControl,
 	toast,
 	usePageMeta,
+	TabButtons,
 } from 'frappe-ui'
 import ListPage from '@/components/Layouts/ListPage.vue'
 import Select from '@/components/Controls/Select.vue'
@@ -101,10 +109,25 @@ import type { ListRow } from '@/types'
 import { sessionStore } from '@/stores/session'
 import { useRouter } from 'vue-router'
 import { openFormRoute } from '@/composables/useFormRoute'
+import DSAProblems from './DSAProblems.vue'
+import { dsaEnabled } from '@/utils/dsa'
+
+const source = ref(dsaEnabled() ? 'dsa' : 'lms')
+const sources = [
+	{ label: __('DSA Problems'), value: 'dsa' },
+	{ label: __('LMS Exercises'), value: 'lms' },
+]
 
 const readOnlyMode = window.read_only_mode
 const { brand } = sessionStore()
 const user = inject<any>('$user')
+const canManage = computed(() =>
+	Boolean(
+		user.data?.is_instructor ||
+			user.data?.is_moderator ||
+			user.data?.is_evaluator
+	)
+)
 const dayjs = inject<typeof dayjsType>('$dayjs')!
 const titleFilter = ref<string>('')
 const languageFilter = ref<string>('')
@@ -117,6 +140,7 @@ onMounted(() => {
 })
 
 const validatePermissions = () => {
+	if (dsaEnabled()) return
 	if (
 		!user.data?.is_instructor &&
 		!user.data?.is_moderator &&

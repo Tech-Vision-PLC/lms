@@ -38,6 +38,7 @@ def get_boot():
 			"csrf_token": frappe.sessions.get_csrf_token(),
 			"site_name": frappe.local.site,
 			"lms_path": get_lms_path(),
+			"dsa_enabled": "dsa" in frappe.get_installed_apps(),
 			"lang": get_user_lang(),
 			"text_direction": "rtl" if is_rtl() else "ltr",
 		}

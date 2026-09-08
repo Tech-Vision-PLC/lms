@@ -2914,20 +2914,37 @@ def get_course_programming_exercise_progress(course: str, member: str):
 				}
 			)
 
+	if "dsa" in frappe.get_installed_apps():
+		for problem in dict.fromkeys(get_assessment_from_lesson(course, "program", "dsa_problem")):
+			latest = frappe.get_all(
+				"DSA Submission",
+				filters={"problem": problem, "member": member},
+				fields=["status"],
+				order_by="creation desc",
+				limit=1,
+			)
+			submissions.append(
+				{
+					"exercise": problem,
+					"exercise_title": frappe.db.get_value("DSAProblem", problem, "title"),
+					"status": latest[0].status if latest else "Not Attempted",
+				}
+			)
 	return submissions
 
 
-def get_assessment_from_lesson(course: str, assessment_type: str):
+def get_assessment_from_lesson(course: str, assessment_type: str, data_field: str | None = None):
 	assessments = []
+	data_field = data_field or ("exercise" if assessment_type == "program" else assessment_type)
 	lessons = frappe.get_all("Course Lesson", {"course": course}, ["name", "title", "content"])
 
 	for lesson in lessons:
 		if lesson.content:
 			for block in get_editorjs_blocks(lesson.content):
 				if block.get("type") == assessment_type:
-					data_field = "exercise" if assessment_type == "program" else assessment_type
 					assessment_name = (block.get("data") or {}).get(data_field)
-					assessments.append(assessment_name)
+					if assessment_name:
+						assessments.append(assessment_name)
 
 	return assessments
 

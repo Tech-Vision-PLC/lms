@@ -45,6 +45,16 @@ class CourseLesson(Document):
 	def validate(self):
 		self.content = sanitize_editorjs(self.content)
 		self.instructor_content = sanitize_editorjs(self.instructor_content)
+		self.validate_dsa_problems()
+
+	def validate_dsa_problems(self):
+		for content in (self.content, self.instructor_content):
+			for block in get_editorjs_blocks(content):
+				problem = (block.get("data") or {}).get("dsa_problem")
+				if block.get("type") != "program" or not problem:
+					continue
+				if "dsa" not in frappe.get_installed_apps() or not frappe.db.exists("DSAProblem", problem):
+					frappe.throw(_("The attached DSA problem does not exist."))
 
 	def on_update(self):
 		self.validate_quiz_id()

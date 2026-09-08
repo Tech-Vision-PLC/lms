@@ -58,6 +58,7 @@ declare module 'vue' {
     DiscussionModal: typeof import('./src/components/Modals/DiscussionModal.vue')['default']
     DiscussionReplies: typeof import('./src/components/DiscussionReplies.vue')['default']
     Discussions: typeof import('./src/components/Discussions.vue')['default']
+    DSAProblemPicker: typeof import('./src/components/Controls/DSAProblemPicker.vue')['default']
     EditCoverImage: typeof import('./src/components/Modals/EditCoverImage.vue')['default']
     EmailAccountList: typeof import('./src/components/Settings/EmailAccount/EmailAccountList.vue')['default']
     EmailAdd: typeof import('./src/components/Settings/EmailAccount/EmailAdd.vue')['default']

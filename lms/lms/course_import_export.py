@@ -61,6 +61,8 @@ def get_assessment_from_block(block):
 	block_type = block.get("type")
 	data_field = "exercise" if block_type == "program" else block_type
 	name = block.get("data", {}).get(data_field)
+	if not name:
+		return None
 	doctype = get_assessment_map().get(block_type)
 	if frappe.db.exists(doctype, name):
 		return frappe.get_doc(doctype, name)
@@ -588,6 +590,8 @@ def replace_assessment_names(zip_file, content):
 		if block.get("type") in assessment_types:
 			data_field = "exercise" if block.get("type") == "program" else block.get("type")
 			assessment_name = data.get(data_field)
+			if not assessment_name:
+				continue
 			assessment_title = get_assessment_title(zip_file, assessment_name, block.get("type"))
 			doctype = get_assessment_map().get(block.get("type"))
 			current_assessment_name = frappe.db.get_value(doctype, {"title": assessment_title}, "name")

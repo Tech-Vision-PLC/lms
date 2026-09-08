@@ -7,6 +7,7 @@
 			{
 				label: __('Save'),
 				variant: 'solid',
+				disabled: source === 'dsa' ? !problem : !exercise,
 				onClick: () => {
 					saveExercise()
 				},
@@ -14,8 +15,18 @@
 		]"
 	>
 		<template #default>
-			<div class="text-base">
+			<div class="text-base space-y-4">
+				<TabButtons
+					v-if="dsaEnabled()"
+					v-model="source"
+					:options="[
+						{ label: __('DSA Problems'), value: 'dsa' },
+						{ label: __('LMS Exercises'), value: 'lms' },
+					]"
+				/>
+				<DSAProblemPicker v-if="source === 'dsa'" v-model="problem" />
 				<Link
+					v-else
 					v-model="exercise"
 					doctype="LMS Programming Exercise"
 					:label="__('Select a Programming Exercise')"
@@ -25,12 +36,16 @@
 	</Dialog>
 </template>
 <script setup lang="ts">
-import { Dialog } from 'frappe-ui'
+import { Dialog, TabButtons } from 'frappe-ui'
 import { onMounted, nextTick, ref } from 'vue'
 import Link from '@/components/Controls/Link.vue'
+import DSAProblemPicker from '@/components/Controls/DSAProblemPicker.vue'
+import { dsaEnabled } from '@/utils/dsa'
 
 const show = ref(false)
 const exercise = ref(null)
+const problem = ref('')
+const source = ref(dsaEnabled() ? 'dsa' : 'lms')
 
 const props = defineProps({
 	onSave: {
@@ -45,7 +60,13 @@ onMounted(async () => {
 })
 
 const saveExercise = () => {
-	props.onSave(exercise.value)
+	if (source.value === 'dsa') {
+		if (!problem.value) return
+		props.onSave({ dsa_problem: problem.value })
+	} else {
+		if (!exercise.value) return
+		props.onSave({ exercise: exercise.value })
+	}
 	show.value = false
 }
 </script>
