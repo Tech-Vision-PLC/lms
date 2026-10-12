@@ -678,8 +678,8 @@ const props = defineProps({
 const __ = window.__ || ((text) => text);
 
 const languages = [
-	{ id: 54, label: "C++", monaco: "cpp", starter: "// Write your C++ solution here\n" },
 	{ id: 71, label: "Python", monaco: "python", starter: "# Write your Python solution here\n" },
+	{ id: 54, label: "C++", monaco: "cpp", starter: "// Write your C++ solution here\n" },
 	{
 		id: 63,
 		label: "JavaScript",
@@ -689,11 +689,14 @@ const languages = [
 	{ id: 62, label: "Java", monaco: "java", starter: "// Write your Java solution here\n" },
 ];
 
+const DEFAULT_LANGUAGE_ID = 71;
+const languageId = ref(DEFAULT_LANGUAGE_ID);
+let previousLanguageId = DEFAULT_LANGUAGE_ID;
+
 const problem = ref(null);
 const loading = ref(true);
 const loadError = ref("");
 
-const languageId = ref(54);
 const code = ref("");
 
 const running = ref(false);
@@ -740,7 +743,6 @@ const inputId = `cp-stdin-${Math.random().toString(36).slice(2, 8)}`;
 let generation = 0;
 let disposed = false;
 let nextTestCaseKey = 2;
-let previousLanguageId = 54;
 let codeDrafts = {};
 
 const currentLanguage = computed(
@@ -1290,9 +1292,9 @@ async function loadProblem() {
 		problem.value = loaded;
 
 		codeDrafts = {};
-		languageId.value = 54;
-		previousLanguageId = 54;
-		code.value = starterFor(54);
+		languageId.value = DEFAULT_LANGUAGE_ID;
+		previousLanguageId = DEFAULT_LANGUAGE_ID;
+		code.value = starterFor(DEFAULT_LANGUAGE_ID);
 
 		testCases.value = (loaded.test_cases || []).map((testCase) => ({
 			key: nextTestCaseKey++,
