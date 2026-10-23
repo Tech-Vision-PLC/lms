@@ -1,0 +1,230 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "hash",
+ "creation": "2026-10-23 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "payment_reference",
+  "course",
+  "batch",
+  "teacher",
+  "student",
+  "chapa_tx_ref",
+  "chapa_transaction_id",
+  "amounts_section",
+  "course_amount",
+  "discount_amount",
+  "tax_amount",
+  "gross_amount",
+  "currency",
+  "column_break_amounts",
+  "commission_rate",
+  "commission_amount",
+  "expected_teacher_amount",
+  "gateway_fee",
+  "reported_teacher_amount",
+  "status_section",
+  "payment_status",
+  "distribution_status",
+  "verified_at"
+ ],
+ "fields": [
+  {
+   "fieldname": "payment_reference",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "LMS Payment",
+   "options": "LMS Payment",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "course",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Course",
+   "options": "LMS Course"
+  },
+  {
+   "fieldname": "batch",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Batch",
+   "options": "LMS Batch"
+  },
+  {
+   "fieldname": "teacher",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Instructor",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Student",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "chapa_tx_ref",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Chapa Transaction Reference",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "chapa_transaction_id",
+   "fieldtype": "Data",
+   "label": "Chapa Transaction ID"
+  },
+  {
+   "fieldname": "amounts_section",
+   "fieldtype": "Section Break",
+   "label": "Payment and Commission Snapshot"
+  },
+  {
+   "fieldname": "course_amount",
+   "fieldtype": "Currency",
+   "label": "Course Amount Before Discount and Tax",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "discount_amount",
+   "fieldtype": "Currency",
+   "label": "Discount Amount",
+   "options": "currency"
+  },
+  {
+   "fieldname": "tax_amount",
+   "fieldtype": "Currency",
+   "label": "Tax Amount",
+   "options": "currency"
+  },
+  {
+   "fieldname": "gross_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Gross Payable Amount",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_amounts",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "commission_rate",
+   "fieldtype": "Percent",
+   "label": "Platform Commission Rate"
+  },
+  {
+   "fieldname": "commission_amount",
+   "fieldtype": "Currency",
+   "label": "Platform Commission Amount",
+   "options": "currency"
+  },
+  {
+   "fieldname": "expected_teacher_amount",
+   "fieldtype": "Currency",
+   "label": "Expected Instructor Amount",
+   "options": "currency"
+  },
+  {
+   "fieldname": "gateway_fee",
+   "fieldtype": "Currency",
+   "label": "Gateway Fee",
+   "options": "currency"
+  },
+  {
+   "fieldname": "reported_teacher_amount",
+   "fieldtype": "Currency",
+   "label": "Reported Instructor Amount",
+   "options": "currency"
+  },
+  {
+   "fieldname": "status_section",
+   "fieldtype": "Section Break",
+   "label": "Payment and Distribution Status"
+  },
+  {
+   "default": "Pending",
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Payment Status",
+   "options": "Pending\nPaid\nFailed\nRefunded\nPartially Refunded",
+   "reqd": 1
+  },
+  {
+   "default": "Pending",
+   "fieldname": "distribution_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Distribution Status",
+   "options": "Pending\nConfirmed\nFailed\nReview Required",
+   "reqd": 1
+  },
+  {
+   "fieldname": "verified_at",
+   "fieldtype": "Datetime",
+   "label": "Payment Verified At",
+   "read_only": 1
+  }
+ ],
+ "links": [
+  {
+   "link_doctype": "LMS Payment",
+   "link_fieldname": "payment_reference"
+  }
+ ],
+ "modified": "2026-10-23 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "LMS",
+ "name": "LMS Course Billing",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Moderator",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
