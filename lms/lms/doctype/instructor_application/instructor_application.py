@@ -1,9 +1,12 @@
 import re
 
+import base64
+import binascii
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import now_datetime
+from frappe.utils import now_datetime,validate_email_address
+
 
 # The LMS decides "instructor" by Course Creator (see get_user_info, can_modify_course).
 STUDENT_ROLE = "LMS Student"
@@ -243,7 +246,163 @@ def _clean_payload(data) -> dict:
 		_check_file_ownership(payload.get(field))
 
 	return payload
+	
+@frappe.whitelist(allow_guest=True)
+def submit_public_application(data):
+    """Accept an instructor application from the public website."""
 
+    if isinstance(data, str):
+        data = frappe.parse_json(data)
+
+    if not isinstance(data, dict):
+        frappe.throw(_("Invalid application data."))
+
+    allowed_fields = {
+        "full_name",
+        "professional_title",
+        "bio",
+        "education",
+        "experience",
+        "expertise",
+        "linkedin",
+        "github",
+        "portfolio",
+        "teaching_reason",
+        "proposed_course",
+    }
+
+    payload = {
+        key: str(value).strip()
+        for key, value in data.items()
+        if key in allowed_fields and value is not None
+    }
+
+    required_fields = (
+        "full_name",
+        "professional_title",
+        "bio",
+        "proposed_course",
+    )
+
+    for field in required_fields:
+        if not payload.get(field):
+            frappe.throw(
+                _("Please provide {0}.").format(
+                    frappe.unscrub(field)
+                )
+            )
+
+    for field, value in payload.items():
+        limit = (
+            5000
+            if field in {
+                "bio",
+                "education",
+                "experience",
+                "expertise",
+                "teaching_reason",
+            }
+            else 500
+        )
+
+        if len(value) > limit:
+            frappe.throw(
+                _("{0} exceeds the maximum allowed length.").format(
+                    frappe.unscrub(field)
+                )
+            )
+
+    # Never trust a public request to select an applicant.
+    payload.pop("applicant", None)
+    payload.pop("status", None)
+
+    # Optional file attachments are supplied as Base64 objects.
+    files = {}
+    for field in ("profile_image", "cv"):
+        file_data = data.get(field)
+
+        if not file_data:
+            continue
+
+        if not isinstance(file_data, dict):
+            frappe.throw(_("Invalid file data."))
+
+        filename = str(file_data.get("file_name") or field)
+        content_type = str(file_data.get("content_type") or "")
+        encoded_content = file_data.get("content") or ""
+
+        if not isinstance(encoded_content, str):
+            frappe.throw(_("Invalid file content."))
+
+        try:
+            content = base64.b64decode(
+                encoded_content,
+                validate=True,
+            )
+        except (ValueError, binascii.Error):
+            frappe.throw(_("The uploaded file is invalid."))
+
+        if not content or len(content) > 5 * 1024 * 1024:
+            frappe.throw(
+                _("Each uploaded file must be no larger than 5 MB.")
+            )
+
+        if field == "profile_image":
+            allowed_types = {
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+            }
+        else:
+            allowed_types = {
+                "application/pdf",
+                "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            }
+
+        if content_type not in allowed_types:
+            frappe.throw(_("Unsupported file type."))
+
+        files[field] = {
+            "filename": filename,
+            "content": content,
+            "content_type": content_type,
+        }
+
+    doc = frappe.new_doc("Instructor Application")
+    doc.update(payload)
+
+    # No authenticated applicant exists for a public submission.
+    doc.applicant = None
+    doc.status = "Pending"
+
+    # Mark the document as a public submission if your controller
+    # uses this flag to distinguish applicant-created documents.
+    doc.flags.from_applicant = True
+
+    # The server, not the visitor, determines the initial status.
+    doc.insert(ignore_permissions=True)
+
+    # Save files as private attachments associated with this application.
+    for field, file_info in files.items():
+        saved_file = frappe.get_doc({
+            "doctype": "File",
+            "file_name": file_info["filename"],
+            "attached_to_doctype": doc.doctype,
+            "attached_to_name": doc.name,
+            "attached_to_field": field,
+            "is_private": 1,
+            "content": file_info["content"],
+        })
+        saved_file.insert(ignore_permissions=True)
+
+        doc.db_set(field, saved_file.file_url, update_modified=False)
+
+    return {
+        "success": True,
+        "name": doc.name,
+        "message": _("Your application has been submitted successfully."),
+    }
 
 def _attach_files(doc):
 	"""Link the uploaded files to the application so reviewers can open the private CV."""
