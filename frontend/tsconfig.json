@@ -12,12 +12,7 @@
     "lib": ["ESNext", "DOM"],
     "types": ["vite/client"],
     "paths": {
-<<<<<<< HEAD
-      "@/*": ["./src/*"],
-      "vue": ["./node_modules/vue"]
-=======
       "@/*": ["./src/*"]
->>>>>>> origin/feat/Billing
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/*.d.ts"],

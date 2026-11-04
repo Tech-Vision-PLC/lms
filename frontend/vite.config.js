@@ -102,7 +102,6 @@ export default defineConfig(async ({ mode }) => {
 			}),
 		],
 		server: {
-<<<<<<< HEAD
 			// The linked @framework/ui (apps/frappe/ui) is imported by name and
 			// resolved through its `exports`, so in dev vite serves it from source,
 			// outside this root, hence the allowance helpdesk makes for it too.
@@ -113,8 +112,6 @@ export default defineConfig(async ({ mode }) => {
 			fs: {
 				allow: ['..', '../..', '../../..', '../../../..'],
 			},
-=======
->>>>>>> origin/feat/Billing
 			host: '0.0.0.0', // Accept connections from any network interface
 			allowedHosts: true,
 			// SCORM packages are served by Frappe's SCORMRenderer at /scorm/... .
@@ -132,7 +129,6 @@ export default defineConfig(async ({ mode }) => {
 			},
 		},
 		resolve: {
-<<<<<<< HEAD
 			// Resolve the linked `@framework/ui` through its symlink rather than its real
 			// path. It is `link:../../frappe/ui`, and its own source imports bare deps of
 			// its own: `vuedraggable` in ConditionGroup.vue, plus reka-ui, dompurify and
@@ -148,19 +144,14 @@ export default defineConfig(async ({ mode }) => {
 			// ...ConditionGroup.vue". Reproduce it by pointing the link at a copy of
 			// apps/frappe/ui that has no node_modules beside it.
 			preserveSymlinks: true,
-=======
->>>>>>> origin/feat/Billing
 			alias: {
 				'@': path.resolve(__dirname, 'src'),
 			},
 			// Force one copy of prosemirror; duplicate copies break tiptap's
 			// instanceof checks and crash the list buttons.
 			dedupe: [
-<<<<<<< HEAD
 				// @framework/ui imports from vue and frappe-ui; a second copy of
 				// either would give its Combobox a different frappe-ui than ours.
-=======
->>>>>>> origin/feat/Billing
 				'prosemirror-model',
 				'prosemirror-state',
 				'prosemirror-view',
@@ -175,10 +166,7 @@ export default defineConfig(async ({ mode }) => {
 				'tailwind.config.js',
 				'highlight.js',
 				'plyr',
-<<<<<<< HEAD
 				'interactjs',
-=======
->>>>>>> origin/feat/Billing
 			],
 			exclude: mode === 'production' ? [] : ['frappe-ui'],
 		},
