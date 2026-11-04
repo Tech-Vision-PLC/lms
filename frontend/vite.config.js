@@ -1,14 +1,10 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-<<<<<<< HEAD
 import fs from 'node:fs'
-=======
->>>>>>> origin/feat/Billing
 import path from 'path'
 import { VitePWA } from 'vite-plugin-pwa'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
-<<<<<<< HEAD
 // `@framework/ui` is imported by name and resolved through node_modules, so the
 // link there is load-bearing rather than a convenience. package.json declares it
 // as `link:../../frappe/ui`, which is correct from apps/lms/frontend and wrong
@@ -41,10 +37,6 @@ function assertFrameworkUiLinked(frontend) {
 export default defineConfig(async ({ mode }) => {
 	const isDev = mode === 'development'
 	assertFrameworkUiLinked(__dirname)
-=======
-export default defineConfig(async ({ mode }) => {
-	const isDev = mode === 'development'
->>>>>>> origin/feat/Billing
 	const frappeui = await importFrappeUIPlugin(isDev)
 
 	const config = {
