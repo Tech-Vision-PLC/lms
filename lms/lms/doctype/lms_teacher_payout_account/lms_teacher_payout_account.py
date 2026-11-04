@@ -107,38 +107,54 @@ def get_permission_query_conditions(user=None):
 	return f"`tabLMS Teacher Payout Account`.teacher = {frappe.db.escape(user)}"
 
 
+
 @frappe.whitelist()
 def get_chapa_banks():
-	frappe.only_for(["System Manager", "Moderator", "Course Creator"])
-	settings = get_chapa_settings()
-	secret_key = settings.get_password("secret_key")
-	if not secret_key:
-		frappe.throw(_("Set a Chapa secret key before loading the bank list."))
-	try:
-		response = requests.get(
-			BANKS_URL,
-			headers={"Authorization": f"Bearer {secret_key}"},
-			timeout=15,
-		)
-		response.raise_for_status()
-		result = response.json()
-	except (requests.RequestException, ValueError):
-		frappe.throw(_("Unable to load Chapa's bank list. Check the Chapa settings and try again."))
+    frappe.only_for(["System Manager", "Moderator", "Course Creator"])
 
-	if not isinstance(result, dict) or result.get("status") != "success":
-		frappe.throw(_("Chapa did not return a bank list. Check the Chapa settings and try again."))
+    settings = get_chapa_settings()
+    secret_key = settings.get_password("secret_key")
 
-	banks = result.get("data") or []
-	if isinstance(banks, dict):
-		banks = banks.get("data") or banks.get("banks") or []
+    if not secret_key:
+        frappe.throw(_("Set a Chapa secret key before loading the bank list."))
 
-	return [
-		{"code": str(code), "name": str(bank.get("name") or code)}
-		for bank in banks
-		if isinstance(bank, dict)
-		for code in [bank.get("bank_code") or bank.get("id") or bank.get("code")]
-		if code
-	]
+    try:
+        response = requests.get(
+            BANKS_URL,
+            headers={"Authorization": f"Bearer {secret_key}"},
+            timeout=15,
+        )
+        response.raise_for_status()
+        result = response.json()
+    except (requests.RequestException, ValueError):
+        frappe.throw(
+            _("Unable to load Chapa's bank list. Check the Chapa settings and try again.")
+        )
+
+    if not isinstance(result, dict):
+        frappe.throw(_("Chapa returned an unexpected bank-list response."))
+
+    banks = result.get("data") or []
+
+    if isinstance(banks, dict):
+        banks = banks.get("data") or banks.get("banks") or []
+
+    if not isinstance(banks, list) or not banks:
+        frappe.throw(_("Chapa returned no banks. Please try again later."))
+
+    return [
+        {
+            "code": str(code),
+            "name": str(bank.get("name") or code),
+        }
+        for bank in banks
+        if isinstance(bank, dict)
+        for code in [
+            bank.get("bank_code") or bank.get("id") or bank.get("code")
+        ]
+        if code
+    ]
+
 
 
 @frappe.whitelist()
