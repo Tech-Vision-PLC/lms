@@ -247,6 +247,13 @@ const tabs = computed(() => {
 })
 </script>
 <style>
+<<<<<<< HEAD
+=======
+.plyr__volume input[type='range'] {
+	display: none;
+}
+
+>>>>>>> origin/feat/Billing
 .plyr__control--overlaid {
 	background: radial-gradient(
 		circle,

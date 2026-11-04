@@ -48,6 +48,7 @@ export default defineConfig({
 			// (valid under Vite's resolver, invalid under Node's strict ESM loader).
 			// Vitest externalizes node_modules to Node's loader by default; inlining
 			// keeps frappe-ui on Vite's transform/resolve pipeline, matching dev/build.
+<<<<<<< HEAD
 			deps: { inline: ['frappe-ui', '@framework/ui'] },
 		},
 	},
@@ -67,6 +68,12 @@ export default defineConfig({
 		// ...ConditionGroup.vue". Reproduce it by pointing the link at a copy of
 		// apps/frappe/ui that has no node_modules beside it.
 		preserveSymlinks: true,
+=======
+			deps: { inline: ['frappe-ui'] },
+		},
+	},
+	resolve: {
+>>>>>>> origin/feat/Billing
 		alias: {
 			'@': path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'src'),
 		},

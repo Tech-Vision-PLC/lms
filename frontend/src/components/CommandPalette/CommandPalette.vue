@@ -4,15 +4,22 @@
 			<Dialog.Title as-child>
 				<h2 class="sr-only">{{ __('Command palette') }}</h2>
 			</Dialog.Title>
+<<<<<<< HEAD
 			<div class="text-base" @keydown="onKeydown">
+=======
+			<div class="text-base">
+>>>>>>> origin/feat/Billing
 				<div class="flex items-center gap-x-2 ps-4.5 border-b">
 					<span class="lucide-search size-4 text-ink-gray-4" />
 					<input
 						ref="inputRef"
 						type="text"
+<<<<<<< HEAD
 						role="combobox"
 						aria-expanded="true"
 						aria-controls="command-palette-results"
+=======
+>>>>>>> origin/feat/Billing
 						:placeholder="__('Search')"
 						class="w-full border-none bg-transparent py-3 !ps-2 pe-4.5 text-base text-ink-gray-7 placeholder-ink-gray-4 focus:ring-0"
 						@input="onInput"
@@ -21,6 +28,7 @@
 					/>
 				</div>
 
+<<<<<<< HEAD
 				<div
 					id="command-palette-results"
 					class="max-h-96 overflow-auto mb-2"
@@ -43,6 +51,22 @@
 					>
 						{{ __('No results found') }}
 					</p>
+=======
+				<div class="max-h-96 overflow-auto mb-2">
+					<div v-if="query.length" class="mt-5 space-y-5">
+						<CommandPaletteGroup
+							:list="searchResults"
+							@navigateTo="navigateTo"
+						/>
+					</div>
+
+					<div v-else class="mt-5 space-y-5">
+						<CommandPaletteGroup
+							:list="jumpToOptions"
+							@navigateTo="navigateTo"
+						/>
+					</div>
+>>>>>>> origin/feat/Billing
 				</div>
 
 				<div
@@ -68,7 +92,11 @@
 						</span>
 					</div>
 					<div class="flex items-center gap-x-2">
+<<<<<<< HEAD
 						<span :class="[wideChipClass, 'text-xs text-ink-gray-7']">
+=======
+						<span :class="[chipClass, 'px-1.5 text-xs text-ink-gray-7']">
+>>>>>>> origin/feat/Billing
 							{{ __('esc') }}
 						</span>
 						<span>
@@ -82,6 +110,7 @@
 </template>
 <script setup lang="ts">
 import { createResource, debounce, Dialog } from 'frappe-ui'
+<<<<<<< HEAD
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { usersStore } from '@/stores/user'
@@ -97,10 +126,17 @@ import {
 	visibleNavTargets,
 } from './categories'
 import { openFormRoute } from '@/composables/useFormRoute'
+=======
+import { nextTick, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { BookOpen, Briefcase, Users } from 'lucide-vue-next'
+import CommandPaletteGroup from './CommandPaletteGroup.vue'
+>>>>>>> origin/feat/Billing
 
 const chipClass =
 	'inline-flex size-5 shrink-0 items-center justify-center rounded-sm bg-surface-gray-2'
 
+<<<<<<< HEAD
 // `size-5` fixes a square, which crops a multi-letter key. Width grows instead.
 const wideChipClass =
 	'inline-flex h-5 min-w-5 w-auto shrink-0 items-center justify-center rounded-sm bg-surface-gray-2 px-1.5'
@@ -401,10 +437,101 @@ const moveActive = (direction: number) => {
 	if (next < 0) activeIndex.value = total - 1
 	else if (next >= total) activeIndex.value = 0
 	else activeIndex.value = next
+=======
+const show = defineModel<boolean>({ required: true, default: false })
+const router = useRouter()
+const query = ref<string>('')
+const searchResults = ref<Array<any>>([])
+
+const search = createResource({
+	url: 'lms.command_palette.search_sqlite',
+	makeParams: () => ({
+		query: query.value,
+	}),
+	onSuccess() {
+		generateSearchResults()
+	},
+})
+
+const debouncedSearch = debounce(() => {
+	if (query.value.length > 2) {
+		search.reload()
+	}
+}, 500)
+
+const onInput = () => {
+	debouncedSearch()
+}
+
+const generateSearchResults = () => {
+	search.data?.forEach((type: any) => {
+		let result: { title: string; items: any[] } = { title: '', items: [] }
+		result.title = type.title
+		type.items.forEach((item: any) => {
+			let paramName = item.doctype === 'LMS Course' ? 'courseName' : 'batchName'
+			item.route = {
+				name: item.doctype === 'LMS Course' ? 'CourseDetail' : 'BatchDetail',
+				params: {
+					[paramName]: item.name,
+				},
+			}
+			item.isActive = false
+		})
+		result.items = type.items
+		searchResults.value.push(result)
+	})
+}
+
+watch(query, () => {
+	searchResults.value = []
+})
+
+watch(show, () => {
+	if (!show.value) {
+		query.value = ''
+		searchResults.value = []
+	}
+})
+
+onMounted(() => {
+	addKeyboardShortcuts()
+})
+
+const addKeyboardShortcuts = () => {
+	window.addEventListener('keydown', (e: KeyboardEvent) => {
+		if (e.key === 'ArrowUp' && show.value) {
+			e.preventDefault()
+			shortcutForArrowKey(-1)
+		} else if (e.key === 'ArrowDown' && show.value) {
+			shortcutForArrowKey(1)
+		} else if (e.key === 'Enter' && show.value) {
+			// A focused result button fires its own click; let that be the
+			// single navigation instead of racing this handler.
+			if ((e.target as HTMLElement)?.closest?.('[data-palette-item]')) return
+			shortcutForEnter()
+		} else if (e.key === 'Escape' && show.value) {
+			show.value = false
+		}
+	})
+}
+
+const shortcutForArrowKey = (direction: number) => {
+	let currentList = query.value.length
+		? searchResults.value
+		: jumpToOptions.value
+	let allItems = currentList.flatMap((result: any) => result.items)
+	let indexOfActive = allItems.findIndex((option: any) => option.isActive)
+	let newIndex = indexOfActive + direction
+	if (newIndex < 0) newIndex = allItems.length - 1
+	if (newIndex >= allItems.length) newIndex = 0
+	allItems[indexOfActive].isActive = false
+	allItems[newIndex].isActive = true
+>>>>>>> origin/feat/Billing
 	nextTick(scrollActiveItemIntoView)
 }
 
 const scrollActiveItemIntoView = () => {
+<<<<<<< HEAD
 	const active = resultsRef.value?.querySelector<HTMLElement>(
 		'[data-palette-item][data-active="true"]'
 	)
@@ -534,6 +661,68 @@ const accountItems = computed<PaletteItem[]>(() => {
 		},
 	]
 })
+=======
+	const activeItem = document.querySelector(
+		'.hover\\:bg-surface-gray-2.bg-surface-gray-2'
+	) as HTMLElement
+	if (activeItem) {
+		activeItem.scrollIntoView({ block: 'nearest' })
+	}
+}
+
+const shortcutForEnter = () => {
+	let currentList = query.value.length
+		? searchResults.value
+		: jumpToOptions.value
+	let allItems = currentList.flatMap((result: any) => result.items)
+	let activeOption = allItems.find((option) => option.isActive)
+	if (activeOption) {
+		navigateTo(activeOption.route)
+	}
+}
+
+const navigateTo = (route: {
+	name: string
+	params?: Record<string, any>
+	query?: Record<string, any>
+}) => {
+	show.value = false
+	query.value = ''
+	router.replace({ name: route.name, params: route.params, query: route.query })
+}
+
+const jumpToOptions = ref([
+	{
+		title: __('Jump to'),
+		items: [
+			{
+				title: 'Courses',
+				icon: BookOpen,
+				route: {
+					name: 'Courses',
+				},
+				isActive: true,
+			},
+			{
+				title: 'Batches',
+				icon: Users,
+				route: {
+					name: 'Batches',
+				},
+				isActive: false,
+			},
+			{
+				title: 'Jobs',
+				icon: Briefcase,
+				route: {
+					name: 'Jobs',
+				},
+				isActive: false,
+			},
+		],
+	},
+])
+>>>>>>> origin/feat/Billing
 </script>
 <style>
 mark {

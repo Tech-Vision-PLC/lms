@@ -13,10 +13,14 @@
 			/>
 			<div
 				class="ms-2 min-w-0 flex-1 text-start"
+<<<<<<< HEAD
 				:class="[
 					inlineSelect ? '' : 'flex items-baseline justify-between gap-3',
 					isScormChapterLocked ? 'cursor-not-allowed opacity-60' : '',
 				]"
+=======
+				:class="inlineSelect ? '' : 'flex items-baseline justify-between gap-3'"
+>>>>>>> origin/feat/Billing
 				@click="redirectToChapter"
 			>
 				<TextInput
@@ -63,6 +67,7 @@
 					/>
 				</Tooltip>
 			</div>
+<<<<<<< HEAD
 			<template v-if="isScormChapterLocked">
 				<span
 					class="lucide-lock-keyhole size-4 text-ink-gray-4"
@@ -73,6 +78,10 @@
 			</template>
 			<span
 				v-else-if="chapter.is_scorm_package && isScormChapterComplete"
+=======
+			<span
+				v-if="chapter.is_scorm_package && isScormChapterComplete"
+>>>>>>> origin/feat/Billing
 				class="lucide-check size-4 text-green-700"
 			/>
 		</DisclosureButton>
@@ -95,6 +104,7 @@
 						"
 					>
 						<component
+<<<<<<< HEAD
 							:is="inlineSelect || lesson.locked ? 'div' : 'router-link'"
 							:to="
 								inlineSelect || lesson.locked ? undefined : lessonRoute(lesson)
@@ -106,6 +116,11 @@
 									? 'cursor-pointer'
 									: ''
 							"
+=======
+							:is="inlineSelect ? 'div' : 'router-link'"
+							:to="inlineSelect ? undefined : lessonRoute(lesson)"
+							:class="inlineSelect ? 'cursor-pointer' : ''"
+>>>>>>> origin/feat/Billing
 							@click="onLessonClick(lesson)"
 						>
 							<div class="flex items-center text-sm leading-5 group">
@@ -141,6 +156,7 @@
 										class="lucide-trash-2 h-4 w-4 text-ink-red-6 invisible group-hover:visible"
 									/>
 								</div>
+<<<<<<< HEAD
 								<template v-if="lesson.locked">
 									<span
 										class="lucide-lock-keyhole h-4 w-4 text-ink-gray-4 ms-2"
@@ -153,6 +169,10 @@
 								</template>
 								<span
 									v-else-if="lesson.is_complete"
+=======
+								<span
+									v-if="lesson.is_complete"
+>>>>>>> origin/feat/Billing
 									class="lucide-check h-4 w-4 text-green-700 ms-2"
 								/>
 							</div>
@@ -276,6 +296,7 @@ const isScormChapterComplete = computed<boolean>(() =>
 	)
 )
 
+<<<<<<< HEAD
 // A SCORM chapter has no DisclosurePanel, so it never reaches the per-lesson lock
 // affordance below: without this it looks identical to an open one and the student
 // only learns it is locked after SCORMChapter.vue bounces them back. Same rule as
@@ -288,6 +309,8 @@ const isScormChapterLocked = computed<boolean>(() =>
 	)
 )
 
+=======
+>>>>>>> origin/feat/Billing
 function isActiveLesson(lessonNumber: string): boolean {
 	if (props.inlineSelect) return props.selectedLessonNumber === lessonNumber
 	return (
@@ -315,7 +338,10 @@ function lessonRoute(lesson: OutlineLesson): RouteLocationRaw {
 }
 
 function onLessonClick(lesson: OutlineLesson) {
+<<<<<<< HEAD
 	if (lesson.locked) return
+=======
+>>>>>>> origin/feat/Billing
 	if (!props.inlineSelect) return
 	emit('select-lesson', {
 		chapterNumber: lesson.number.split('-')[0],
@@ -333,7 +359,10 @@ function addLesson() {
 function redirectToChapter() {
 	if (!props.chapter.is_scorm_package) return
 	;(event as Event | undefined)?.preventDefault()
+<<<<<<< HEAD
 	if (isScormChapterLocked.value) return
+=======
+>>>>>>> origin/feat/Billing
 	if (!user.data) {
 		toast.success(__('Please enroll for this course to view this lesson'))
 		return

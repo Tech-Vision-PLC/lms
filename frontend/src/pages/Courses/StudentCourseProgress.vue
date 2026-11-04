@@ -214,7 +214,11 @@ const getLessonStatusTheme = (lesson: any) => {
 }
 
 const getAssessmentStatusTheme = (status: string) => {
+<<<<<<< HEAD
 	if (status.includes('Pass')) return 'green'
+=======
+	if (status.includes('Pass') || status === 'Accepted') return 'green'
+>>>>>>> origin/feat/Billing
 	else if (status.includes('Fail')) return 'red'
 	else return 'orange'
 }

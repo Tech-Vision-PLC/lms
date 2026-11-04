@@ -29,6 +29,7 @@ jobs:
         with:
           path: apps/lms
 
+<<<<<<< HEAD
       # frontend/package.json links `@framework/ui` to ../../frappe/ui, so the
       # SPA does not build without the package beside it. Only that directory is
       # needed, and only from `develop`: ConditionBuilder is on no v16 tag.
@@ -39,6 +40,8 @@ jobs:
           path: apps/frappe
           sparse-checkout: ui
 
+=======
+>>>>>>> origin/feat/Billing
       - name: Create bench structure
         run: |
           mkdir -p sites

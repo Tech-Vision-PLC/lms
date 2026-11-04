@@ -10,6 +10,7 @@ jobs:
     name: Vitest
     runs-on: ubuntu-latest
     steps:
+<<<<<<< HEAD
       # The bench layout, because frontend/package.json declares
       # `@framework/ui: link:../../frappe/ui` the way helpdesk and crm do. A
       # checkout at the workspace root resolves that link outside the workspace,
@@ -28,6 +29,9 @@ jobs:
           ref: develop
           path: apps/frappe
           sparse-checkout: ui
+=======
+      - uses: actions/checkout@v4
+>>>>>>> origin/feat/Billing
 
       - uses: actions/setup-node@v6
         with:
@@ -38,14 +42,26 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/yarn
+<<<<<<< HEAD
           key: ${{ runner.os }}-yarn-${{ hashFiles('apps/lms/frontend/yarn.lock') }}
+=======
+          key: ${{ runner.os }}-yarn-${{ hashFiles('frontend/yarn.lock') }}
+>>>>>>> origin/feat/Billing
           restore-keys: |
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
+<<<<<<< HEAD
         working-directory: apps/lms/frontend
         run: yarn install --frozen-lockfile
 
       - name: Run vitest
         working-directory: apps/lms/frontend
+=======
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Run vitest
+        working-directory: frontend
+>>>>>>> origin/feat/Billing
         run: yarn test --run

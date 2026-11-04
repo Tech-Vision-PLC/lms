@@ -44,6 +44,7 @@ vi.mock('frappe-ui', () => ({
 		inheritAttrs: false,
 		template: `<button v-bind="$attrs"><slot name="icon" /><slot /></button>`,
 	},
+<<<<<<< HEAD
 	// Emits for real: clearing a field is the only way to reach the form's
 	// empty-vs-null comparison. `data-label` lets a test address one field.
 	FormControl: {
@@ -51,6 +52,12 @@ vi.mock('frappe-ui', () => ({
 		props: ['modelValue', 'label', 'type', 'required', 'options'],
 		emits: ['update:modelValue'],
 		template: `<label>{{ label }}<input :data-label="label" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" /></label>`,
+=======
+	FormControl: {
+		props: ['modelValue', 'label', 'type', 'required'],
+		emits: ['update:modelValue'],
+		template: `<label>{{ label }}<input :value="modelValue" /></label>`,
+>>>>>>> origin/feat/Billing
 	},
 	Badge: passthrough,
 	TabButtons: passthrough,
@@ -137,15 +144,19 @@ describe('the profile edit route', () => {
 			writable: true,
 			configurable: true,
 		})
+<<<<<<< HEAD
 		// get_profile_details is a bare frappe.db.get_value, so a field the user
 		// never filled in arrives as null, not ''. `headline: ''` is the third
 		// case: what a field holds after one save through this form.
+=======
+>>>>>>> origin/feat/Billing
 		profileResource.data = {
 			name: 'john@example.com',
 			username: USERNAME,
 			first_name: 'John',
 			last_name: 'Doe',
 			user_image: '/files/john.png',
+<<<<<<< HEAD
 			headline: '',
 			bio: null,
 			language: 'en',
@@ -153,6 +164,10 @@ describe('the profile edit route', () => {
 			linkedin: null,
 			github: null,
 			twitter: null,
+=======
+			headline: 'Learner',
+			language: 'en',
+>>>>>>> origin/feat/Billing
 		}
 		profileResource.reload.mockClear()
 	})
@@ -279,6 +294,7 @@ describe('the profile edit route', () => {
 
 		expect(router.currentRoute.value.name).toBe('ProfileAbout')
 	})
+<<<<<<< HEAD
 
 	// Guards the seeding loop: it walks the draft's keys, so a key it misses is
 	// silently left blank rather than failing loudly.
@@ -356,4 +372,6 @@ describe('the profile edit route', () => {
 		await flushPromises()
 		expect(wrapper.text()).not.toContain('Not Saved')
 	})
+=======
+>>>>>>> origin/feat/Billing
 })

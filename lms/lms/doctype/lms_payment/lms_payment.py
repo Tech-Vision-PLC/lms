@@ -16,10 +16,12 @@ class LMSPayment(Document):
 
 
 UNIQUE_PAYMENT_ID = "unique_payment_id"
+UNIQUE_CHAPA_TX_REF = "unique_chapa_tx_ref"
 
 
 def on_doctype_update():
 	add_unique_payment_id_constraint()
+	add_unique_chapa_tx_ref_constraint()
 
 
 def add_unique_payment_id_constraint():
@@ -65,6 +67,45 @@ def get_duplicate_payment_ids() -> list[str]:
 		.select(payment.payment_id)
 		.where(payment.payment_id.notnull() & (payment.payment_id != ""))
 		.groupby(payment.payment_id)
+		.having(fn.Count(payment.name) > 1)
+	).run(pluck=True)
+
+
+def add_unique_chapa_tx_ref_constraint():
+	"""Keep each Chapa transaction reference mapped to at most one LMS Payment.
+
+	Blank references are ignored so existing non-Chapa and historical payments
+	can coexist while new references receive a database-level uniqueness check.
+	"""
+	if has_unique_chapa_tx_ref():
+		return
+
+	duplicates = get_duplicate_chapa_tx_refs()
+	if duplicates:
+		frappe.log_error(
+			title="Duplicate Chapa references block a unique constraint on LMS Payment",
+			message="More than one LMS Payment row shares a Chapa transaction reference: "
+			+ ", ".join(duplicates)
+			+ ". Remove or correct the duplicate references; the next migrate will add the unique constraint.",
+			defer_insert=True,
+		)
+		frappe.db.add_index("LMS Payment", ["chapa_tx_ref"])
+		return
+
+	frappe.db.add_unique("LMS Payment", ["chapa_tx_ref"])
+
+
+def has_unique_chapa_tx_ref() -> bool:
+	return bool(frappe.db.has_index("tabLMS Payment", UNIQUE_CHAPA_TX_REF))
+
+
+def get_duplicate_chapa_tx_refs() -> list[str]:
+	payment = frappe.qb.DocType("LMS Payment")
+	return (
+		frappe.qb.from_(payment)
+		.select(payment.chapa_tx_ref)
+		.where(payment.chapa_tx_ref.notnull() & (payment.chapa_tx_ref != ""))
+		.groupby(payment.chapa_tx_ref)
 		.having(fn.Count(payment.name) > 1)
 	).run(pluck=True)
 

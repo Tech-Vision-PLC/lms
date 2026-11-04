@@ -11,7 +11,11 @@ import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 
 vi.mock('frappe-ui', () => ({
+<<<<<<< HEAD
 	createResource: () => ({ data: [], submit: vi.fn(async () => []) }),
+=======
+	createResource: () => ({ data: [], reload: vi.fn() }),
+>>>>>>> origin/feat/Billing
 	debounce: (fn: () => void) => fn,
 	Dialog: Object.assign(
 		{
@@ -24,6 +28,7 @@ vi.mock('frappe-ui', () => ({
 
 vi.mock('vue-router', () => ({ useRouter: () => ({ push: vi.fn() }) }))
 
+<<<<<<< HEAD
 // The palette reads roles to decide which category rows to show, and the
 // settings store to decide whether the Settings row can do anything.
 vi.mock('@/stores/user', () => ({
@@ -54,6 +59,8 @@ vi.mock('@/stores/settings', () => ({
 	}),
 }))
 
+=======
+>>>>>>> origin/feat/Billing
 vi.mock('@/components/CommandPalette/CommandPaletteGroup.vue', () => ({
 	default: { props: ['list'], template: `<div />` },
 }))

@@ -3,7 +3,11 @@
  * returns query hits, so a link control that never resolves its own modelValue
  * renders the placeholder until the user opens the dropdown.
  */
+<<<<<<< HEAD
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+=======
+import { describe, expect, it, vi, beforeEach } from 'vitest'
+>>>>>>> origin/feat/Billing
 import { flushPromises, mount } from '@vue/test-utils'
 import { reactive } from 'vue'
 import MultiLink from '@/components/Controls/MultiLink.vue'
@@ -47,15 +51,19 @@ const USER_DIRECTORY: Row[] = [
 
 const SEARCH_USERS = 'lms.lms.api.search_users_by_role'
 
+<<<<<<< HEAD
 interface Gate {
 	promise: Promise<void>
 	release: () => void
 }
 
+=======
+>>>>>>> origin/feat/Billing
 const h = vi.hoisted(() => ({
 	resources: [] as FakeResource[],
 	searchHits: [] as Row[],
 	resolveByName: true,
+<<<<<<< HEAD
 	// Set to hold every `reload()` open, so the in-flight state can be read.
 	gate: null as Gate | null,
 }))
@@ -70,6 +78,10 @@ function openGate(): Gate {
 	return gate
 }
 
+=======
+}))
+
+>>>>>>> origin/feat/Billing
 /**
  * Each endpoint is modelled on its real server-side signature. Frappe strips
  * kwargs a whitelisted method does not declare, so params the method has no
@@ -137,7 +149,10 @@ vi.mock('frappe-ui', async () => {
 			}
 			res.reload = async () => {
 				res.loading = true
+<<<<<<< HEAD
 				if (h.gate) await h.gate.promise
+=======
+>>>>>>> origin/feat/Billing
 				const rows = respond(res.url, res.params ?? {})
 				res.data = config.transform
 					? config.transform(rows as unknown as Record<string, unknown>[])
@@ -156,6 +171,7 @@ vi.stubGlobal('__', (s: string) => s)
 // jsdom has no scrollIntoView; reka's Listbox calls it as soon as the popover opens.
 Element.prototype.scrollIntoView = vi.fn()
 
+<<<<<<< HEAD
 // Every mount is attached to the document and its popover is portaled there, so
 // a wrapper left mounted outlives its test and the next test's popover lookup
 // finds the previous one's. Tracked here and torn down in afterEach.
@@ -168,6 +184,14 @@ function mountLink(
 	slots: Record<string, string> = {}
 ) {
 	const wrapper = mount(MultiLink, {
+=======
+function mountLink(
+	modelValue: string[],
+	disabled = false,
+	extraProps: Record<string, unknown> = {}
+) {
+	return mount(MultiLink, {
+>>>>>>> origin/feat/Billing
 		props: {
 			doctype: 'LMS Course',
 			modelValue,
@@ -175,20 +199,27 @@ function mountLink(
 			disabled,
 			...extraProps,
 		},
+<<<<<<< HEAD
 		slots,
+=======
+>>>>>>> origin/feat/Billing
 		attachTo: document.body,
 		// The popover footer renders `__('Clear')`, which resolves through the instance
 		// context rather than globalThis. vi.stubGlobal alone does not reach it.
 		global: { mocks: { __: (s: string) => s } },
 	})
+<<<<<<< HEAD
 	mounted.push(wrapper)
 	return wrapper
+=======
+>>>>>>> origin/feat/Billing
 }
 
 beforeEach(() => {
 	h.resources.length = 0
 	h.searchHits = []
 	h.resolveByName = true
+<<<<<<< HEAD
 	h.gate = null
 })
 
@@ -220,6 +251,10 @@ function searchResource(): FakeResource | undefined {
 	return h.resources.find((r) => r.params && !r.params.names)
 }
 
+=======
+})
+
+>>>>>>> origin/feat/Billing
 describe('MultiLink saved values', () => {
 	it('shows saved values on mount without opening the dropdown', async () => {
 		const wrapper = mountLink(['docker-for-developers'])
@@ -230,16 +265,21 @@ describe('MultiLink saved values', () => {
 		expect(trigger.text()).not.toContain('Courses')
 	})
 
+<<<<<<< HEAD
 	// The trigger no longer spells every label out. The summary suite below covers
 	// so what "resolved" means is read off the option map the control exposes,
 	// which is also what the consumers using `optionByValue` read.
 	it('resolves every saved value, not just the first', async () => {
+=======
+	it('shows every saved value, not just the first', async () => {
+>>>>>>> origin/feat/Billing
 		const wrapper = mountLink([
 			'docker-for-developers',
 			'kubernetes-in-practice',
 		])
 		await flushPromises()
 
+<<<<<<< HEAD
 		const byValue = (
 			wrapper.vm as unknown as {
 				optionByValue: Map<string, { label: string }>
@@ -251,6 +291,11 @@ describe('MultiLink saved values', () => {
 		expect(byValue.get('kubernetes-in-practice')?.label).toBe(
 			'Kubernetes in Practice part 1'
 		)
+=======
+		const text = wrapper.get('button[data-state]').text()
+		expect(text).toContain('Docker for Developers')
+		expect(text).toContain('Kubernetes in Practice part 1')
+>>>>>>> origin/feat/Billing
 	})
 
 	it('falls back to the raw docname when the label cannot be resolved', async () => {
@@ -332,8 +377,13 @@ describe('MultiLink saved values on a custom search endpoint', () => {
 })
 
 describe('MultiLink disabled', () => {
+<<<<<<< HEAD
 	// A frozen (foreign or read-only) Raven rule locks every control on its card;
 	// without this the two link pickers stayed clickable and the freeze leaked.
+=======
+	// A frozen (Paused) Raven rule locks every control on its card; without this the
+	// two link pickers stayed clickable and the freeze leaked.
+>>>>>>> origin/feat/Billing
 	it('does not open the dropdown when disabled', async () => {
 		const wrapper = mountLink(['docker-for-developers'], true)
 		await flushPromises()
@@ -365,6 +415,7 @@ describe('MultiLink disabled', () => {
 		expect(trigger.attributes('data-state')).toBe('open')
 	})
 })
+<<<<<<< HEAD
 
 describe('MultiLink trigger', () => {
 	// The control drew its own trigger, with focus and open styling written by
@@ -701,3 +752,5 @@ describe('MultiLink select all', () => {
 		expect(selected ?? []).toEqual([])
 	})
 })
+=======
+>>>>>>> origin/feat/Billing

@@ -1,6 +1,7 @@
 <template>
 	<ListPage
 		:breadcrumbs="breadcrumbs"
+<<<<<<< HEAD
 		:title="__('Submissions for {0} Quiz').format(quizTitle || '…')"
 		layout="list"
 		:columns="columns"
@@ -11,6 +12,17 @@
 		:list-options="{
 			showTooltip: false,
 			selectable: true,
+=======
+		:title="quizTitle"
+		layout="list"
+		:columns="quizColumns"
+		:rows="submissions.data || []"
+		:loading="submissions.loading"
+		:has-next-page="submissions.hasNextPage"
+		:list-options="{
+			showTooltip: false,
+			selectable: false,
+>>>>>>> origin/feat/Billing
 			getRowRoute: (row) => ({
 				name: 'QuizSubmission',
 				params: { submission: row.name },
@@ -20,6 +32,7 @@
 		empty-name="Quiz Submissions"
 		empty-icon="lucide-file-check"
 		@load-more="submissions.next()"
+<<<<<<< HEAD
 	>
 		<template #filters>
 			<FormControl
@@ -67,6 +80,12 @@ import {
 	toast,
 	usePageMeta,
 } from 'frappe-ui'
+=======
+	/>
+</template>
+<script setup>
+import { createListResource, usePageMeta } from 'frappe-ui'
+>>>>>>> origin/feat/Billing
 import { computed, onMounted, inject, ref, watch } from 'vue'
 import { sessionStore } from '../stores/session'
 import { useRouter } from 'vue-router'
@@ -75,8 +94,16 @@ import ListPage from '@/components/Layouts/ListPage.vue'
 const { brand } = sessionStore()
 const router = useRouter()
 const user = inject('$user')
+<<<<<<< HEAD
 const dayjs = inject('$dayjs')
 const search = ref('')
+=======
+
+onMounted(() => {
+	if (!user.data?.is_instructor && !user.data?.is_moderator)
+		router.push({ name: 'Courses' })
+})
+>>>>>>> origin/feat/Billing
 
 const props = defineProps({
 	quizID: {
@@ -85,6 +112,7 @@ const props = defineProps({
 	},
 })
 
+<<<<<<< HEAD
 onMounted(() => {
 	if (!user.data?.is_instructor && !user.data?.is_moderator)
 		router.push({ name: 'Courses' })
@@ -195,18 +223,83 @@ const columns = computed(() => [
 
 const breadcrumbs = computed(() => {
 	const crumbs = [{ label: __('Quizzes'), route: { name: 'Quizzes' } }]
+=======
+const submissions = createListResource({
+	doctype: 'LMS Quiz Submission',
+	filters: {
+		quiz: props.quizID,
+	},
+	fields: ['name', 'member_name', 'score', 'percentage', 'quiz_title'],
+	orderBy: 'creation desc',
+	pageLength: 24,
+	auto: true,
+})
+
+const pageLength = ref(24)
+
+watch(pageLength, (value) => {
+	submissions.pageLength = value
+	submissions.reload()
+})
+
+const quizColumns = computed(() => {
+	return [
+		{
+			label: __('Member'),
+			key: 'member_name',
+			width: 1,
+		},
+		{
+			label: __('Score'),
+			key: 'score',
+			width: 1,
+			align: 'left',
+		},
+		{
+			label: __('Percentage'),
+			key: 'percentage',
+			width: 1,
+			align: 'left',
+		},
+	]
+})
+
+const quizTitle = computed(() => submissions.data?.[0]?.quiz_title || '')
+
+const breadcrumbs = computed(() => {
+	const crumbs = [
+		{
+			label: __('Quizzes'),
+			route: { name: 'Quizzes' },
+		},
+	]
+
+>>>>>>> origin/feat/Billing
 	if (quizTitle.value) {
 		crumbs.push({
 			label: quizTitle.value,
 			route: { name: 'QuizForm', params: { quizID: props.quizID } },
 		})
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/feat/Billing
 	crumbs.push({ label: __('Submissions') })
 	return crumbs
 })
 
+<<<<<<< HEAD
 usePageMeta(() => ({
 	title: __('Quiz Submissions'),
 	icon: brand.favicon,
 }))
+=======
+usePageMeta(() => {
+	return {
+		title: __('Quiz Submissions'),
+		icon: brand.favicon,
+	}
+})
+>>>>>>> origin/feat/Billing
 </script>

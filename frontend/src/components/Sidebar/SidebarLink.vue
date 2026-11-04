@@ -18,7 +18,11 @@
 				:disabled="!isCollapsed"
 			>
 				<slot name="icon">
+<<<<<<< HEAD
 					<span class="grid size-4 flex-shrink-0 place-items-center">
+=======
+					<span class="grid h-5 w-6 flex-shrink-0 place-items-center">
+>>>>>>> origin/feat/Billing
 						<component
 							:is="typeof link.icon === 'string' ? icons[link.icon] : link.icon"
 							class="h-4 w-4 stroke-1.5 text-ink-gray-8"
@@ -127,10 +131,17 @@ function handleClick(): void {
 		showContactForm.value = true
 	} else if (props.link.to) {
 		if (props.link.to.startsWith('http')) {
+<<<<<<< HEAD
 			window.location.href = props.link.to
 			return
 		}
 		window.location.href = new URL(`/${props.link.to}`, window.location.origin).href
+=======
+			openExternal(props.link.to)
+			return
+		}
+		window.location.href = `/${props.link.to}`
+>>>>>>> origin/feat/Billing
 	}
 }
 

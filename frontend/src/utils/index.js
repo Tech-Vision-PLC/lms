@@ -26,9 +26,12 @@ import SimpleImage from '@editorjs/simple-image'
 import Table from '@editorjs/table'
 import DOMPurify from 'dompurify'
 import { decodeEntities } from './inertHtml'
+<<<<<<< HEAD
 import { Audio } from '@/utils/audio'
 import { CodingProblem } from '@/utils/codingProblem'
 
+=======
+>>>>>>> origin/feat/Billing
 
 const readOnlyMode = window.read_only_mode
 
@@ -164,6 +167,7 @@ export function getEditorTools(
 			class: Upload,
 			config: uploadContext,
 		},
+<<<<<<< HEAD
 		audio: {
 			class: Audio,
 			config: uploadContext,
@@ -172,6 +176,8 @@ export function getEditorTools(
 			class: CodingProblem,
 			config: uploadContext,
 		},
+=======
+>>>>>>> origin/feat/Billing
 		table: {
 			class: Table,
 			inlineToolbar: INLINE_TOOLBAR_ORDER,
@@ -553,6 +559,7 @@ const getSidebarItems = (forMobile = false) => {
 					},
 				},
 				{
+<<<<<<< HEAD
 					label: 'Problems',
 					icon: 'Code',
 					to: 'https://learn.techvision.edu.et/list-problems',
@@ -565,6 +572,8 @@ const getSidebarItems = (forMobile = false) => {
 					activeFor: [],
 				},
 				{
+=======
+>>>>>>> origin/feat/Billing
 					label: 'Batches',
 					icon: 'Users',
 					to: 'Batches',
@@ -591,6 +600,7 @@ const getSidebarItems = (forMobile = false) => {
 					to: 'Statistics',
 					activeFor: ['Statistics'],
 				},
+<<<<<<< HEAD
 				
 				{
 					label: 'Leaderboard',
@@ -598,6 +608,8 @@ const getSidebarItems = (forMobile = false) => {
 					to: 'https://learn.techvision.edu.et/leaderboard',
 					activeFor: [],
 				},
+=======
+>>>>>>> origin/feat/Billing
 				{
 					label: 'Contact Us',
 					icon: settings.data?.contact_us_url ? 'Headset' : 'Mail',

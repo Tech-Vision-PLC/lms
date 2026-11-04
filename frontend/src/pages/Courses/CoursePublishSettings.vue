@@ -22,6 +22,7 @@
 					:label="__('Self enrollment')"
 					:description="__('Let users enroll themselves.')"
 				/>
+<<<<<<< HEAD
 				<BooleanSwitch
 					size="sm"
 					v-model="doc.enforce_lesson_completion"
@@ -31,6 +32,8 @@
 					"
 					@update:modelValue="markDirty()"
 				/>
+=======
+>>>>>>> origin/feat/Billing
 			</div>
 		</CollapsibleSection>
 

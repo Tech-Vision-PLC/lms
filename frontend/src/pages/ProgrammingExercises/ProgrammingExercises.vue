@@ -1,5 +1,15 @@
 <template>
+<<<<<<< HEAD
 	<ListPage
+=======
+	<DSAProblems v-if="source === 'dsa'">
+		<template #tabs
+			><TabButtons v-if="canManage" v-model="source" :options="sources"
+		/></template>
+	</DSAProblems>
+	<ListPage
+		v-else
+>>>>>>> origin/feat/Billing
 		:breadcrumbs="breadcrumbs"
 		:title="__('{0} Exercises').format(totalExercises.data || 0)"
 		layout="list"
@@ -42,6 +52,10 @@
 		</template>
 
 		<template #filters>
+<<<<<<< HEAD
+=======
+			<TabButtons v-if="dsaEnabled()" v-model="source" :options="sources" />
+>>>>>>> origin/feat/Billing
 			<FormControl
 				v-model="titleFilter"
 				:placeholder="__('Search')"
@@ -93,6 +107,10 @@ import {
 	FormControl,
 	toast,
 	usePageMeta,
+<<<<<<< HEAD
+=======
+	TabButtons,
+>>>>>>> origin/feat/Billing
 } from 'frappe-ui'
 import ListPage from '@/components/Layouts/ListPage.vue'
 import Select from '@/components/Controls/Select.vue'
@@ -101,10 +119,31 @@ import type { ListRow } from '@/types'
 import { sessionStore } from '@/stores/session'
 import { useRouter } from 'vue-router'
 import { openFormRoute } from '@/composables/useFormRoute'
+<<<<<<< HEAD
+=======
+import DSAProblems from './DSAProblems.vue'
+import { dsaEnabled } from '@/utils/dsa'
+
+const source = ref(dsaEnabled() ? 'dsa' : 'lms')
+const sources = [
+	{ label: __('DSA Problems'), value: 'dsa' },
+	{ label: __('LMS Exercises'), value: 'lms' },
+]
+>>>>>>> origin/feat/Billing
 
 const readOnlyMode = window.read_only_mode
 const { brand } = sessionStore()
 const user = inject<any>('$user')
+<<<<<<< HEAD
+=======
+const canManage = computed(() =>
+	Boolean(
+		user.data?.is_instructor ||
+			user.data?.is_moderator ||
+			user.data?.is_evaluator
+	)
+)
+>>>>>>> origin/feat/Billing
 const dayjs = inject<typeof dayjsType>('$dayjs')!
 const titleFilter = ref<string>('')
 const languageFilter = ref<string>('')
@@ -117,6 +156,10 @@ onMounted(() => {
 })
 
 const validatePermissions = () => {
+<<<<<<< HEAD
+=======
+	if (dsaEnabled()) return
+>>>>>>> origin/feat/Billing
 	if (
 		!user.data?.is_instructor &&
 		!user.data?.is_moderator &&

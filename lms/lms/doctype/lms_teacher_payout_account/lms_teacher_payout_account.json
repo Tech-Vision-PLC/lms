@@ -1,0 +1,188 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:teacher",
+ "creation": "2026-10-23 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "teacher",
+  "billing_section",
+  "account_name",
+  "business_name",
+  "bank_code",
+  "bank_name",
+  "account_number",
+  "chapa_section",
+  "chapa_subaccount_id",
+  "split_type",
+  "split_value",
+  "payout_account_status",
+  "setup_error",
+  "verification_section",
+  "verified_on",
+  "verified_by"
+ ],
+ "fields": [
+  {
+   "fieldname": "teacher",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Instructor",
+   "options": "User",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "billing_section",
+   "fieldtype": "Section Break",
+   "label": "Seller Billing Information"
+  },
+  {
+   "fieldname": "account_name",
+   "fieldtype": "Data",
+   "label": "Bank Account Holder Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "business_name",
+   "fieldtype": "Data",
+   "label": "Business or Seller Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "bank_code",
+   "fieldtype": "Select",
+   "label": "Bank Code",
+   "reqd": 1
+  },
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Data",
+   "label": "Bank",
+   "read_only": 1
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Password",
+   "label": "Bank Account Number"
+  },
+  {
+   "fieldname": "chapa_section",
+   "fieldtype": "Section Break",
+   "label": "Chapa Subaccount"
+  },
+  {
+   "fieldname": "chapa_subaccount_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Chapa Subaccount ID",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "split_type",
+   "fieldtype": "Select",
+   "label": "Split Type",
+   "options": "\npercentage\nflat",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "split_value",
+   "fieldtype": "Float",
+   "description": "For percentage, enter a decimal fraction (for example, 0.03 for 3%). For flat, enter an ETB amount.",
+   "label": "Platform Split Value",
+   "permlevel": 1
+  },
+  {
+   "default": "Pending Verification",
+   "fieldname": "payout_account_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Pending Verification\nReady\nFailed\nReview Required\nDisabled\nVerified",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "setup_error",
+   "fieldtype": "Small Text",
+   "label": "Setup Message",
+   "permlevel": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "verification_section",
+   "fieldtype": "Section Break",
+   "label": "Verification"
+  },
+  {
+   "fieldname": "verified_on",
+   "fieldtype": "Datetime",
+   "label": "Verified On",
+   "permlevel": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "verified_by",
+   "fieldtype": "Link",
+   "label": "Verified By",
+   "options": "User",
+   "permlevel": 1,
+   "read_only": 1
+  }
+ ],
+ "links": [],
+ "modified": "2026-10-23 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "LMS",
+ "name": "LMS Teacher Payout Account",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "permlevel": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "permlevel": 1,
+   "read": 1,
+   "role": "Moderator",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Moderator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Course Creator",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

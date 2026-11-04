@@ -5,6 +5,7 @@
 				<h1 class="text-2xl-bold text-ink-gray-9">
 					{{ __('Hey') }}, {{ user.data?.full_name }} 👋
 				</h1>
+<<<<<<< HEAD
 
 				<div class="flex items-center gap-2">
 					<!-- XP -->
@@ -26,6 +27,11 @@
 
 					<!-- Streak -->
 					<button
+=======
+				<div>
+					<button
+						v-if="!isAdmin"
+>>>>>>> origin/feat/Billing
 						type="button"
 						@click="showStreakModal = true"
 						:aria-label="
@@ -33,6 +39,7 @@
 								streakInfo.data?.current_streak || 0
 							)
 						"
+<<<<<<< HEAD
 						class="flex items-center gap-2 rounded-lg bg-surface-amber-2 px-3 py-2 cursor-pointer"
 					>
 						<span>🔥</span>
@@ -47,6 +54,14 @@
 								{{ __('days') }}
 							</span>
 						</div>
+=======
+						class="bg-surface-amber-2 px-2 py-1 rounded-md cursor-pointer"
+					>
+						<span> 🔥 </span>
+						<span class="text-ink-gray-9">
+							{{ streakInfo.data?.current_streak }}
+						</span>
+>>>>>>> origin/feat/Billing
 					</button>
 				</div>
 			</div>
@@ -62,18 +77,25 @@
 		>
 			<LoadingIndicator class="size-5 text-ink-gray-5" />
 		</div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/feat/Billing
 		<AdminHome
 			v-else-if="isAdmin && currentTab === 'instructor'"
 			:liveClasses="adminLiveClasses"
 			:evals="adminEvals"
 		/>
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/feat/Billing
 		<StudentHome
 			v-else-if="currentTab === 'student'"
 			:myLiveClasses="myLiveClasses"
 		/>
 	</div>
+<<<<<<< HEAD
 
 	<Streak v-model="showStreakModal" :streakInfo="streakInfo" />
 </template>
@@ -86,6 +108,13 @@ import {
 	LoadingIndicator,
 	usePageMeta,
 } from 'frappe-ui'
+=======
+	<Streak v-model="showStreakModal" :streakInfo="streakInfo" />
+</template>
+<script setup lang="ts">
+import { computed, inject, onMounted, ref } from 'vue'
+import { call, createResource, LoadingIndicator, usePageMeta } from 'frappe-ui'
+>>>>>>> origin/feat/Billing
 import { sessionStore } from '@/stores/session'
 import StudentHome from '@/pages/Home/StudentHome.vue'
 import AdminHome from '@/pages/Home/AdminHome.vue'
@@ -93,11 +122,17 @@ import Streak from '@/pages/Home/Streak.vue'
 
 const user = inject<any>('$user')
 const { brand } = sessionStore()
+<<<<<<< HEAD
 
 const evalCount = ref(0)
 const currentTab = ref<'student' | 'instructor'>('student')
 const showStreakModal = ref(false)
 const xpValue = ref(0)
+=======
+const evalCount = ref(0)
+const currentTab = ref<'student' | 'instructor'>('student')
+const showStreakModal = ref(false)
+>>>>>>> origin/feat/Billing
 
 const fetchEvalCount = () => {
 	call('frappe.client.get_count', {
@@ -112,6 +147,7 @@ const fetchEvalCount = () => {
 	})
 }
 
+<<<<<<< HEAD
 const fetchXP = () => {
 	call('dsa.xp.get_my_xp')
 		.then((data: any) => {
@@ -123,6 +159,8 @@ const fetchXP = () => {
 		})
 }
 
+=======
+>>>>>>> origin/feat/Billing
 const isAdmin = computed(() => {
 	return (
 		user.data?.is_moderator ||
@@ -138,7 +176,10 @@ const isHomeLoading = computed(() => {
 			(adminEvals.loading && !adminEvals.data)
 		)
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/feat/Billing
 	return myLiveClasses.loading && !myLiveClasses.data
 })
 
@@ -148,24 +189,40 @@ onMounted(() => {
 	} else {
 		currentTab.value = 'student'
 		fetchEvalCount()
+<<<<<<< HEAD
 		
 	}
 	fetchXP()
+=======
+	}
+>>>>>>> origin/feat/Billing
 })
 
 const myLiveClasses = createResource({
 	url: 'lms.lms.api.get_my_live_classes',
+<<<<<<< HEAD
 	auto: !isAdmin.value,
+=======
+	auto: !isAdmin.value ? true : false,
+>>>>>>> origin/feat/Billing
 })
 
 const adminLiveClasses = createResource({
 	url: 'lms.lms.api.get_admin_live_classes',
+<<<<<<< HEAD
 	auto: isAdmin.value,
+=======
+	auto: isAdmin.value ? true : false,
+>>>>>>> origin/feat/Billing
 })
 
 const adminEvals = createResource({
 	url: 'lms.lms.api.get_admin_evals',
+<<<<<<< HEAD
 	auto: isAdmin.value,
+=======
+	auto: isAdmin.value ? true : false,
+>>>>>>> origin/feat/Billing
 })
 
 const streakInfo = createResource({
@@ -176,6 +233,7 @@ const streakInfo = createResource({
 const subtitle = computed(() => {
 	if (isAdmin.value) {
 		let liveClassSuffix =
+<<<<<<< HEAD
 			adminLiveClasses.data?.length > 1
 				? __('live classes')
 				: __('live class')
@@ -189,6 +247,12 @@ const subtitle = computed(() => {
 			adminLiveClasses.data?.length > 0 &&
 			adminEvals.data?.length > 0
 		) {
+=======
+			adminLiveClasses.data?.length > 1 ? __('live classes') : __('live class')
+		let evalSuffix =
+			adminEvals.data?.length > 1 ? __('evaluations') : __('evaluation')
+		if (adminLiveClasses.data?.length > 0 && adminEvals.data?.length > 0) {
+>>>>>>> origin/feat/Billing
 			return __('You have {0} upcoming {1} and {2} {3} scheduled.').format(
 				adminLiveClasses.data.length,
 				liveClassSuffix,
@@ -206,6 +270,7 @@ const subtitle = computed(() => {
 				evalSuffix
 			)
 		}
+<<<<<<< HEAD
 
 		return __('Manage your courses and batches at a glance')
 	} else {
@@ -223,6 +288,14 @@ const subtitle = computed(() => {
 			myLiveClasses.data?.length > 0 &&
 			evalCount.value > 0
 		) {
+=======
+		return __('Manage your courses and batches at a glance')
+	} else {
+		let liveClassSuffix =
+			myLiveClasses.data?.length > 1 ? __('live classes') : __('live class')
+		let evalSuffix = evalCount.value > 1 ? __('evaluations') : __('evaluation')
+		if (myLiveClasses.data?.length > 0 && evalCount.value > 0) {
+>>>>>>> origin/feat/Billing
 			return __('You have {0} upcoming {1} and {2} {3} scheduled.').format(
 				myLiveClasses.data.length,
 				liveClassSuffix,
@@ -240,7 +313,10 @@ const subtitle = computed(() => {
 				evalSuffix
 			)
 		}
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/feat/Billing
 		return __('Resume where you left off')
 	}
 })
@@ -251,4 +327,8 @@ usePageMeta(() => {
 		icon: brand.favicon,
 	}
 })
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> origin/feat/Billing

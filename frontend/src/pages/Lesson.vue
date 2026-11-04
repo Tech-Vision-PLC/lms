@@ -38,10 +38,17 @@
 				{{ lessonIndex }} / {{ lessonTotal }}
 			</div>
 			<Button
+<<<<<<< HEAD
 				v-if="canGoNext"
 				variant="subtle"
 				class="!size-9"
 				:label="__('Next lesson')"
+=======
+				variant="subtle"
+				class="!size-9"
+				:label="__('Next lesson')"
+				:disabled="!hasNext"
+>>>>>>> origin/feat/Billing
 				@click="goNext()"
 			>
 				<template #icon>
@@ -89,6 +96,7 @@
 					</Button>
 				</div>
 			</div>
+<<<<<<< HEAD
 			<div v-else-if="lesson.data.locked" class="sm:border-e">
 				<LockedLessonNotice
 					:redirect="!!lesson.data.redirect_to"
@@ -96,6 +104,8 @@
 					@done="goToCurrentLesson()"
 				/>
 			</div>
+=======
+>>>>>>> origin/feat/Billing
 			<div
 				v-else
 				ref="lessonContainer"
@@ -154,10 +164,14 @@
 									</template>
 									<span>{{ __('Previous') }}</span>
 								</Button>
+<<<<<<< HEAD
 								<Button
 									v-if="lesson.data.next && canGoNext"
 									@click="switchLesson('next')"
 								>
+=======
+								<Button v-if="lesson.data.next" @click="switchLesson('next')">
+>>>>>>> origin/feat/Billing
 									<template #suffix>
 										<span class="lucide-chevron-right size-4" />
 									</template>
@@ -197,10 +211,14 @@
 									</span>
 								</Button>
 
+<<<<<<< HEAD
 								<Button
 									v-if="lesson.data.next && canGoNext"
 									@click="switchLesson('next')"
 								>
+=======
+								<Button v-if="lesson.data.next" @click="switchLesson('next')">
+>>>>>>> origin/feat/Billing
 									<template #suffix>
 										<span class="lucide-chevron-right size-4" />
 									</template>
@@ -263,10 +281,14 @@
 							v-else-if="lesson.data.instructor_notes"
 							class="ProseMirror prose prose-table:table-fixed prose-td:p-2 prose-th:p-2 prose-td:border prose-th:border prose-td:border-outline-gray-2 prose-th:border-outline-gray-2 prose-td:relative prose-th:relative prose-th:bg-surface-gray-2 prose-sm max-w-none !whitespace-normal mt-8"
 						>
+<<<<<<< HEAD
 							<LessonContent
 								:key="lesson.data.name"
 								:content="lesson.data.instructor_notes"
 							/>
+=======
+							<LessonContent :content="lesson.data.instructor_notes" />
+>>>>>>> origin/feat/Billing
 						</div>
 						<div
 							v-if="lesson.data.content"
@@ -281,7 +303,10 @@
 						>
 							<LessonContent
 								v-if="lesson.data?.body"
+<<<<<<< HEAD
 								:key="lesson.data.name"
+=======
+>>>>>>> origin/feat/Billing
 								:content="lesson.data.body"
 								:youtube="lesson.data.youtube"
 								:quizId="lesson.data.quiz_id"
@@ -414,7 +439,10 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import Discussions from '@/components/Discussions.vue'
 import CertificationLinks from '@/components/CertificationLinks.vue'
 import CourseOutline from '@/components/CourseOutline.vue'
+<<<<<<< HEAD
 import LockedLessonNotice from '@/components/LockedLessonNotice.vue'
+=======
+>>>>>>> origin/feat/Billing
 import StudentLessonSidebar from '@/components/StudentLessonSidebar.vue'
 import BottomSheet from '@/components/BottomSheet.vue'
 import PageHeader from '@/components/Layouts/PageHeader.vue'
@@ -488,6 +516,7 @@ onMounted(() => {
 		collapsedByLesson = true
 	}
 	document.addEventListener('fullscreenchange', attachFullscreenEvent)
+<<<<<<< HEAD
 	socket.on('update_lesson_progress', onLessonProgress)
 })
 
@@ -502,6 +531,15 @@ const onLessonProgress = (data) => {
 	if (data.lesson !== completedLesson.value) outline.reload()
 }
 
+=======
+	socket.on('update_lesson_progress', (data) => {
+		if (data.course === props.courseName) {
+			lessonProgress.value = data.progress
+		}
+	})
+})
+
+>>>>>>> origin/feat/Billing
 const attachFullscreenEvent = () => {
 	if (document.fullscreenElement) {
 		zenModeEnabled.value = true
@@ -516,9 +554,12 @@ const attachFullscreenEvent = () => {
 
 onBeforeUnmount(() => {
 	document.removeEventListener('fullscreenchange', attachFullscreenEvent)
+<<<<<<< HEAD
 	// Without this the handler outlives the page, and every revisit adds another
 	// one — so a single progress event fires one outline reload per past visit.
 	socket.off('update_lesson_progress', onLessonProgress)
+=======
+>>>>>>> origin/feat/Billing
 	if (collapsedByLesson) sidebarStore.isSidebarCollapsed = false
 	trackVideoWatchDuration()
 })
@@ -543,9 +584,12 @@ const setupLesson = (data) => {
 		})
 		return
 	}
+<<<<<<< HEAD
 	if (data.locked) {
 		return
 	}
+=======
+>>>>>>> origin/feat/Billing
 	if (data.is_scorm_package) {
 		router.push({
 			name: 'SCORMChapter',
@@ -650,9 +694,12 @@ const progress = createResource({
 	onSuccess(data) {
 		lessonProgress.value = data
 		completedLesson.value = lesson.data?.name
+<<<<<<< HEAD
 		// Reload here rather than waiting on the socket, so this page's own
 		// completion unlocks the next lesson even where realtime is unavailable.
 		outline.reload()
+=======
+>>>>>>> origin/feat/Billing
 	},
 })
 
@@ -725,6 +772,7 @@ const hasPrev = computed(() => currentIndex.value > 0)
 const hasNext = computed(
 	() => currentIndex.value >= 0 && currentIndex.value < lessonTotal.value - 1
 )
+<<<<<<< HEAD
 const outlineLessons = computed(() =>
 	(outline.data ?? []).flatMap((c) => c.lessons ?? [])
 )
@@ -745,6 +793,13 @@ const goToLessonNumber = (number, { replace = false } = {}) => {
 	trackVideoWatchDuration()
 	const [chapterNumber, lessonNumber] = number.split('-')
 	const target = {
+=======
+
+const goToLessonNumber = (number) => {
+	trackVideoWatchDuration()
+	const [chapterNumber, lessonNumber] = number.split('-')
+	router.push({
+>>>>>>> origin/feat/Billing
 		name: 'Lesson',
 		params: {
 			courseName: props.courseName,
@@ -752,6 +807,7 @@ const goToLessonNumber = (number, { replace = false } = {}) => {
 			lessonNumber,
 		},
 		query: studentViewQuery.value,
+<<<<<<< HEAD
 	}
 	if (replace) router.replace(target)
 	else router.push(target)
@@ -760,6 +816,9 @@ const goToLessonNumber = (number, { replace = false } = {}) => {
 const goToCurrentLesson = () => {
 	if (lesson.data?.redirect_to)
 		goToLessonNumber(lesson.data.redirect_to, { replace: true })
+=======
+	})
+>>>>>>> origin/feat/Billing
 }
 
 const goPrev = () => {
@@ -768,14 +827,21 @@ const goPrev = () => {
 }
 
 const goNext = () => {
+<<<<<<< HEAD
 	// The mobile pager is driven by the outline, so it needs the outline-derived
 	// index too — canGoNext alone can be true before the outline resolves.
 	if (canGoNext.value && hasNext.value)
+=======
+	if (hasNext.value)
+>>>>>>> origin/feat/Billing
 		goToLessonNumber(lessonNumbers.value[currentIndex.value + 1])
 }
 
 const switchLesson = (direction) => {
+<<<<<<< HEAD
 	if (direction === 'next' && !canGoNext.value) return
+=======
+>>>>>>> origin/feat/Billing
 	trackVideoWatchDuration()
 	let target =
 		direction === 'prev'
@@ -1404,6 +1470,13 @@ usePageMeta(() => {
 	border-inline-start: 1px solid #e8e8eb;
 }
 
+<<<<<<< HEAD
+=======
+.plyr__volume input[type='range'] {
+	display: none;
+}
+
+>>>>>>> origin/feat/Billing
 .plyr__control--overlaid {
 	background: radial-gradient(
 		circle,

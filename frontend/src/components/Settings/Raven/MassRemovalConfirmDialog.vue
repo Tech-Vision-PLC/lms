@@ -12,7 +12,11 @@
 			{
 				label: confirmLabel,
 				variant: 'solid',
+<<<<<<< HEAD
 				theme: removedCount > 0 || unknown ? 'red' : 'gray',
+=======
+				theme: removedCount > 0 ? 'red' : 'gray',
+>>>>>>> origin/feat/Billing
 				onClick: onConfirm,
 			},
 		]"
@@ -31,6 +35,7 @@ const props = withDefaults(
 		/** Non-zero only for a combinator switch: All (AND) → Any (OR) admits people. */
 		addedCount?: number
 		targetLabel: string
+<<<<<<< HEAD
 		/**
 		 * The counts could not be worked out, so they are zero for want of an answer
 		 * rather than because nobody moves. Said plainly instead of dressed up as
@@ -39,6 +44,10 @@ const props = withDefaults(
 		unknown?: boolean
 	}>(),
 	{ addedCount: 0, unknown: false }
+=======
+	}>(),
+	{ addedCount: 0 }
+>>>>>>> origin/feat/Billing
 )
 
 const emit = defineEmits<{
@@ -70,17 +79,23 @@ const addOnly = computed<boolean>(
 )
 
 const title = computed<string>(() => {
+<<<<<<< HEAD
 	if (props.unknown) return __('Save without checking who this affects?')
+=======
+>>>>>>> origin/feat/Billing
 	if (bothWays.value) return __('Change who is a member?')
 	if (addOnly.value) return __('Add members?')
 	return __('Remove members?')
 })
 
 const message = computed<string>(() => {
+<<<<<<< HEAD
 	if (props.unknown)
 		return __(
 			'The conditions on {0} could not be worked out, so there is no telling who this change adds or removes. It usually means the app that supplies a condition type is no longer installed. Saving applies the change anyway.'
 		).format(props.targetLabel)
+=======
+>>>>>>> origin/feat/Billing
 	if (bothWays.value)
 		return __(
 			'This will add {0} members to {1} and remove {2}. The removals cannot be undone. Cancel to keep the current membership.'
@@ -95,7 +110,10 @@ const message = computed<string>(() => {
 })
 
 const confirmLabel = computed<string>(() => {
+<<<<<<< HEAD
 	if (props.unknown) return __('Save anyway')
+=======
+>>>>>>> origin/feat/Billing
 	if (bothWays.value)
 		return __('Add {0}, remove {1}').format(
 			props.addedCount,

@@ -53,6 +53,7 @@ export interface TextColumn extends ColumnBase {
 export interface BadgeColumn extends ColumnBase {
 	type: 'badge'
 	badges: (row: SettingsListRow) => SettingsListBadge[]
+<<<<<<< HEAD
 	/**
 	 * Badges drawn before the rest collapse into a `+N`. Defaults to 3.
 	 *
@@ -61,6 +62,8 @@ export interface BadgeColumn extends ColumnBase {
 	 * than the page. Raise it only for a column wide enough to hold them.
 	 */
 	maxBadges?: number
+=======
+>>>>>>> origin/feat/Billing
 }
 
 export interface SwitchColumn extends ColumnBase {
@@ -68,6 +71,7 @@ export interface SwitchColumn extends ColumnBase {
 	checked: (row: SettingsListRow) => boolean
 	ariaLabel: (row: SettingsListRow) => string
 	onChange: (row: SettingsListRow, value: boolean) => void
+<<<<<<< HEAD
 	/**
 	 * Rows whose switch is shown but cannot be flipped. Defaults to none.
 	 *
@@ -76,6 +80,8 @@ export interface SwitchColumn extends ColumnBase {
 	 * other than what the switch says, e.g. create the record it toggles.
 	 */
 	disabled?: (row: SettingsListRow) => boolean
+=======
+>>>>>>> origin/feat/Billing
 }
 
 export interface ActionsColumn {

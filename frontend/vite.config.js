@@ -1,10 +1,14 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+<<<<<<< HEAD
 import fs from 'node:fs'
+=======
+>>>>>>> origin/feat/Billing
 import path from 'path'
 import { VitePWA } from 'vite-plugin-pwa'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
+<<<<<<< HEAD
 // `@framework/ui` is imported by name and resolved through node_modules, so the
 // link there is load-bearing rather than a convenience. package.json declares it
 // as `link:../../frappe/ui`, which is correct from apps/lms/frontend and wrong
@@ -37,6 +41,10 @@ function assertFrameworkUiLinked(frontend) {
 export default defineConfig(async ({ mode }) => {
 	const isDev = mode === 'development'
 	assertFrameworkUiLinked(__dirname)
+=======
+export default defineConfig(async ({ mode }) => {
+	const isDev = mode === 'development'
+>>>>>>> origin/feat/Billing
 	const frappeui = await importFrappeUIPlugin(isDev)
 
 	const config = {
@@ -94,6 +102,7 @@ export default defineConfig(async ({ mode }) => {
 			}),
 		],
 		server: {
+<<<<<<< HEAD
 			// The linked @framework/ui (apps/frappe/ui) is imported by name and
 			// resolved through its `exports`, so in dev vite serves it from source,
 			// outside this root, hence the allowance helpdesk makes for it too.
@@ -104,6 +113,8 @@ export default defineConfig(async ({ mode }) => {
 			fs: {
 				allow: ['..', '../..', '../../..', '../../../..'],
 			},
+=======
+>>>>>>> origin/feat/Billing
 			host: '0.0.0.0', // Accept connections from any network interface
 			allowedHosts: true,
 			// SCORM packages are served by Frappe's SCORMRenderer at /scorm/... .
@@ -121,6 +132,7 @@ export default defineConfig(async ({ mode }) => {
 			},
 		},
 		resolve: {
+<<<<<<< HEAD
 			// Resolve the linked `@framework/ui` through its symlink rather than its real
 			// path. It is `link:../../frappe/ui`, and its own source imports bare deps of
 			// its own: `vuedraggable` in ConditionGroup.vue, plus reka-ui, dompurify and
@@ -136,14 +148,19 @@ export default defineConfig(async ({ mode }) => {
 			// ...ConditionGroup.vue". Reproduce it by pointing the link at a copy of
 			// apps/frappe/ui that has no node_modules beside it.
 			preserveSymlinks: true,
+=======
+>>>>>>> origin/feat/Billing
 			alias: {
 				'@': path.resolve(__dirname, 'src'),
 			},
 			// Force one copy of prosemirror; duplicate copies break tiptap's
 			// instanceof checks and crash the list buttons.
 			dedupe: [
+<<<<<<< HEAD
 				// @framework/ui imports from vue and frappe-ui; a second copy of
 				// either would give its Combobox a different frappe-ui than ours.
+=======
+>>>>>>> origin/feat/Billing
 				'prosemirror-model',
 				'prosemirror-state',
 				'prosemirror-view',
@@ -158,7 +175,10 @@ export default defineConfig(async ({ mode }) => {
 				'tailwind.config.js',
 				'highlight.js',
 				'plyr',
+<<<<<<< HEAD
 				'interactjs',
+=======
+>>>>>>> origin/feat/Billing
 			],
 			exclude: mode === 'production' ? [] : ['frappe-ui'],
 		},

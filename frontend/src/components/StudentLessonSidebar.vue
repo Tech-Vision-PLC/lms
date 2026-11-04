@@ -53,6 +53,7 @@
 						<ul class="list-none">
 							<li v-for="lesson in chapter.lessons || []" :key="lesson.name">
 								<component
+<<<<<<< HEAD
 									:is="
 										lesson.locked
 											? 'div'
@@ -63,6 +64,12 @@
 									:type="!lesson.locked && inlineSelect ? 'button' : undefined"
 									:to="
 										lesson.locked || inlineSelect
+=======
+									:is="inlineSelect ? 'button' : 'router-link'"
+									:type="inlineSelect ? 'button' : undefined"
+									:to="
+										inlineSelect
+>>>>>>> origin/feat/Billing
 											? undefined
 											: {
 													name: 'Lesson',
@@ -76,22 +83,36 @@
 									"
 									class="flex w-full items-center gap-3 rounded ps-9 pe-3 py-2 text-start text-sm leading-5 text-ink-gray-8 hover:bg-surface-gray-2"
 									:class="[
+<<<<<<< HEAD
 										lesson.locked
 											? 'cursor-not-allowed opacity-60'
 											: inlineSelect
 											? 'cursor-pointer'
 											: '',
+=======
+										inlineSelect ? 'cursor-pointer' : '',
+>>>>>>> origin/feat/Billing
 										isActive(lesson.number)
 											? 'bg-surface-gray-2 text-ink-gray-9'
 											: '',
 									]"
+<<<<<<< HEAD
 									@click="onLessonClick(lesson)"
+=======
+									@click="
+										emit('select-lesson', {
+											chapterNumber: lesson.number.split('-')[0],
+											lessonNumber: lesson.number.split('-')[1],
+										})
+									"
+>>>>>>> origin/feat/Billing
 								>
 									<component
 										:is="iconFor(lesson.icon)"
 										class="size-4 stroke-1.5 shrink-0 text-ink-gray-7"
 									/>
 									<span class="truncate flex-1">{{ lesson.title }}</span>
+<<<<<<< HEAD
 									<template v-if="lesson.locked">
 										<LockKeyhole
 											class="size-4 stroke-1.5 shrink-0 text-ink-gray-4"
@@ -101,6 +122,10 @@
 									</template>
 									<CircleCheck
 										v-else-if="lesson.is_complete"
+=======
+									<CircleCheck
+										v-if="lesson.is_complete"
+>>>>>>> origin/feat/Billing
 										class="size-4 stroke-1.5 shrink-0 text-green-700 fill-none"
 									/>
 									<Circle
@@ -214,6 +239,7 @@ function isActive(number) {
 	return props.selectedLessonNumber === number
 }
 
+<<<<<<< HEAD
 function onLessonClick(lesson) {
 	if (lesson.locked) return
 	emit('select-lesson', {
@@ -222,6 +248,8 @@ function onLessonClick(lesson) {
 	})
 }
 
+=======
+>>>>>>> origin/feat/Billing
 function chapterDefaultOpen(chapter) {
 	if (!props.selectedLessonNumber) return chapter.idx === 1
 	return (
