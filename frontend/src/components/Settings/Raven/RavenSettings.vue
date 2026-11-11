@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
 	<ChannelView
 		v-if="ready && screen === 'channel' && channel"
 		:name="channel.name"
@@ -27,19 +26,6 @@
 		:description="description"
 		@open="openWorkspace"
 		@new="openNewWorkspace"
-=======
-	<!-- Workspace detail replaces the panel rather than nesting inside it, so it
-		 owns its own SettingsLayout and back control. -->
-	<ChannelsView
-		v-if="
-			setup.data?.raven &&
-			setup.data?.raven_integration &&
-			setup.data?.enabled &&
-			selectedWorkspace
-		"
-		:workspace="selectedWorkspace"
-		@back="onBack"
->>>>>>> origin/feat/Billing
 	/>
 
 	<SettingsLayout
@@ -47,7 +33,6 @@
 		:title="__(label)"
 		:description="__(description)"
 	>
-<<<<<<< HEAD
 		<template #title-badge>
 			<Badge
 				v-if="!notPermitted && missingApp"
@@ -73,75 +58,11 @@
 			:missing="missingApp"
 			:loading="enableIntegration.loading"
 			@enable="enableIntegration.submit()"
-=======
-		<template v-if="!needsSetup" #header-actions>
-			<Button variant="solid" @click="openCreateWorkspace">
-				<template #prefix><span class="lucide-plus h-4 w-4" /></template>
-				{{ __('Create workspace') }}
-			</Button>
-		</template>
-
-		<!-- Setup states sit where every other empty state does: 35% down, centered,
-			 w-4/12 (EmptyStateLayout). Management flows from the top instead. -->
-		<div
-			v-if="needsSetup"
-			class="relative flex h-full min-h-64 w-full grow justify-center"
-		>
-			<div
-				class="absolute inset-x-0 top-[35%] mx-auto flex w-4/12 flex-col items-center gap-3 px-4"
-			>
-				<p v-if="notPermitted" class="text-center text-p-base text-ink-gray-6">
-					{{
-						__(
-							'You need the System Manager role to manage the Raven integration.'
-						)
-					}}
-				</p>
-				<RavenNotInstalledBanner
-					v-else-if="!setup.data?.raven_integration"
-					missing="raven_integration"
-				/>
-				<RavenNotInstalledBanner
-					v-else-if="!setup.data?.raven"
-					missing="raven"
-				/>
-				<!-- Not-enabled card: one-way connect, no disable toggle. -->
-				<template v-else>
-					<span class="lucide-messages-square size-7.5 text-ink-gray-5" />
-					<div class="flex flex-col items-center gap-1">
-						<span class="text-center text-p-lg-medium text-ink-gray-8">
-							{{ __('Connect Raven to Frappe Learning') }}
-						</span>
-						<span class="text-center text-p-base text-ink-gray-6">
-							{{
-								__(
-									'Enable the integration to sync workspace and channel membership from your students and staff.'
-								)
-							}}
-						</span>
-					</div>
-					<Button
-						variant="solid"
-						:loading="enableIntegration.loading"
-						@click="enableIntegration.submit()"
-					>
-						{{ __('Enable') }}
-					</Button>
-				</template>
-			</div>
-		</div>
-
-		<WorkspaceList
-			v-else
-			ref="workspaceList"
-			@open-channels="onSelectWorkspace"
->>>>>>> origin/feat/Billing
 		/>
 	</SettingsLayout>
 </template>
 
 <script setup lang="ts">
-<<<<<<< HEAD
 // A detail page replaces the panel rather than nesting inside it, so it owns its
 // own SettingsLayout and back control. Same shape as CRM's SlaConfig, which
 // swaps SlaPolicyList for SlaPolicyView on one `step` ref.
@@ -161,15 +82,6 @@ import WorkspaceView from './WorkspaceView.vue'
 import ChannelView from './ChannelView.vue'
 import type { MappingRow } from '@/composables/raven/useMappingList'
 import type { RavenSetupState } from '@/types'
-=======
-import { Button, createResource, toast } from 'frappe-ui'
-import { computed, ref } from 'vue'
-import SettingsLayout from '@/components/Layouts/SettingsLayout.vue'
-import RavenNotInstalledBanner from './RavenNotInstalledBanner.vue'
-import WorkspaceList from './WorkspaceList.vue'
-import ChannelsView from './ChannelsView.vue'
-import type { RavenSetupState, RavenWorkspace } from '@/types'
->>>>>>> origin/feat/Billing
 
 // Settings.vue passes every panel a label/description; declaring them keeps them out
 // of $attrs, where `description` would fall through and override SettingsLayout's.
@@ -190,7 +102,6 @@ const setup = createResource<RavenSetupState>({
 	},
 })
 
-<<<<<<< HEAD
 // Which app is missing, if any. `raven_integration` first: without it there is no
 // endpoint to ask about Raven, so reporting Raven as missing would be a guess.
 const missingApp = computed<'raven' | 'raven_integration' | null>(() => {
@@ -211,13 +122,6 @@ const needsSetup = computed(
 // template is what is left: the states where there is no list to show.
 const ready = computed(
 	(): boolean => !needsSetup.value && !notPermitted.value && !setup.loading
-=======
-// True while either app is missing or the integration is not yet enabled. Those
-// states render a vertically-centered card.
-const needsSetup = computed(
-	(): boolean =>
-		!setup.data?.raven_integration || !setup.data?.raven || !setup.data?.enabled
->>>>>>> origin/feat/Billing
 )
 
 // One-way enable (no disable).
@@ -231,7 +135,6 @@ const enableIntegration = createResource({
 	},
 })
 
-<<<<<<< HEAD
 /** Which of the three screens is showing. A channel always has a workspace behind it. */
 type Screen = 'list' | 'workspace' | 'channel'
 
@@ -304,24 +207,5 @@ function adoptWorkspaceName(next: string): void {
 function closeChannel(): void {
 	channel.value = null
 	screen.value = 'workspace'
-=======
-const selectedWorkspace = ref<RavenWorkspace | null>(null)
-const workspaceList = ref<{
-	openCreate: () => void
-} | null>(null)
-
-function onSelectWorkspace(workspace: RavenWorkspace): void {
-	selectedWorkspace.value = workspace
-}
-
-function onBack(): void {
-	selectedWorkspace.value = null
-}
-
-// The create-workspace action lives next to the panel heading; delegate the
-// actual dialog/resource to WorkspaceList (which owns them).
-function openCreateWorkspace(): void {
-	workspaceList.value?.openCreate()
->>>>>>> origin/feat/Billing
 }
 </script>

@@ -1,0 +1,36 @@
+import secrets
+import string
+
+import frappe
+
+
+def create_referral_code(doc, method=None):
+    """Create one unique referral code for each newly created user."""
+
+    # Avoid creating another code if the user already has one.
+    if frappe.db.exists("Referral Code", {"user": doc.name}):
+        return
+
+    alphabet = string.ascii_uppercase + string.digits
+
+    # Generate a unique code.
+    while True:
+        code = "REF-" + "".join(
+            secrets.choice(alphabet) for _ in range(8)
+        )
+
+        if not frappe.db.exists(
+            "Referral Code",
+            {"referral_code": code},
+        ):
+            break
+
+    frappe.get_doc({
+        "doctype": "Referral Code",
+        "user": doc.name,
+        "referral_code": code,
+    }).insert(ignore_permissions=True)
+
+    frappe.logger("referral").info(
+        f"Created referral code for user {doc.name}"
+    )

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import type {
 	ApiRule,
 	ApiRuleGroup,
@@ -10,9 +9,6 @@ import type {
 	RuleNode,
 	RulePath,
 } from '@/types'
-=======
-import type { ApiRule, RavenMemberRule, RuleFieldValue } from '@/types'
->>>>>>> origin/feat/Billing
 
 /** This app's provider name. A rule from any other provider is read-only here. */
 export const LMS_PROVIDER = 'LMS'
@@ -28,12 +24,8 @@ const WIRE_KEYS: readonly string[] = [
 	'matches',
 ]
 
-<<<<<<< HEAD
 /** True for a key every provider's rule carries, as opposed to one of its own fields. */
 export function isWireKey(key: string): boolean {
-=======
-function isWireKey(key: string): boolean {
->>>>>>> origin/feat/Billing
 	return WIRE_KEYS.includes(key)
 }
 
@@ -71,7 +63,6 @@ export function toApiRule(r: RavenMemberRule): ApiRule {
 	}
 }
 
-<<<<<<< HEAD
 /** True if this node is a group rather than a rule: it is the one with children. */
 export function isRuleGroup(node: RuleNode): node is RuleGroup {
 	return (
@@ -197,39 +188,4 @@ export function leafAt(
 		node = child
 	}
 	return isRuleGroup(node) ? null : node
-=======
-/**
- * Identity of a rule's *membership effect*: everything but the cosmetic `label`/
- * `name`, so callers can tell a rename apart from a change that moves people.
- */
-export function membershipSignature(rules: readonly RavenMemberRule[]): string {
-	return JSON.stringify(
-		rules.map((r) => {
-			const { provider, rule_type, status, config } = toApiRule(r)
-			// Canonicalize config like ruleIdentity does, so key order never
-			// spuriously changes the signature and forces an avoidable diff.
-			return { provider, rule_type, status, config: canonicalJson(config) }
-		})
-	)
-}
-
-/** JSON.stringify with object keys sorted, so key order never affects equality. */
-function canonicalJson(value: unknown): string {
-	if (value && typeof value === 'object' && !Array.isArray(value)) {
-		const obj = value as Record<string, unknown>
-		const sorted: Record<string, unknown> = {}
-		for (const key of Object.keys(obj).sort()) sorted[key] = obj[key]
-		return JSON.stringify(sorted)
-	}
-	return JSON.stringify(value)
-}
-
-/**
- * Mirrors `engine.validate_unique_member_rules`: provider + rule_type + config, key
- * order aside. `status` is excluded there too: a Paused rule collides with Active.
- */
-export function ruleIdentity(r: RavenMemberRule): string {
-	const { provider, rule_type, config } = toApiRule(r)
-	return JSON.stringify([provider, rule_type, canonicalJson(config)])
->>>>>>> origin/feat/Billing
 }

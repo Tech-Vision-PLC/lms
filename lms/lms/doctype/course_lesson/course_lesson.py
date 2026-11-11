@@ -20,6 +20,7 @@ from lms.lms.doctype.lms_enrollment.lms_enrollment import (
 )
 from lms.lms.permissions import INSTRUCTOR_FIELDS, can_access_lesson, get_locked_lessons
 from lms.lms.utils import (
+	can_modify_course,
 	get_course_progress,
 	get_editorjs_blocks,
 	guest_access_allowed,
@@ -108,17 +109,16 @@ def cleanup_lesson_backreferences(lesson: str):
 
 def has_permission(doc, ptype="read", user=None):
 	user = user or frappe.session.user
+
 	if ptype not in ("read", "select", "print"):
-		# Authoring (create/write/delete): mirror sibling LMS hooks. Moderators
-		# and Course Creators manage lessons; otherwise fall back to per-course
-		# instructor/moderator via the rule.
-		roles = frappe.get_roles(user)
-		if "Moderator" in roles or "Course Creator" in roles:
-			return True
-		return can_access_lesson(doc.name, instructor_only=True, user=user)
-	# Read/select/print: the security gate. Enrollment / preview / instructor only.
-	# Deliberately NOT widened to all Course Creators, to preserve the media-access
-	# boundary (matches the original get_lesson gate).
+		# Creating, updating, and deleting lessons requires access
+		# to the lesson's assigned course.
+		if not doc or not doc.course:
+			return False
+
+		return can_modify_course(doc.course, user=user)
+
+	# Preserve existing student, preview, and instructor read rules.
 	return can_access_lesson(doc.name, user=user)
 
 

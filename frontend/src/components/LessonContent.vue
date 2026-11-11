@@ -1,23 +1,10 @@
 <template>
-<<<<<<< HEAD
 	<div v-if="youtubeEmbedId(youtube)" :key="youtubeEmbedId(youtube)">
 		<div
 			class="video-player"
 			data-plyr-provider="youtube"
 			:data-plyr-embed-id="youtubeEmbedId(youtube)"
 		></div>
-=======
-	<div v-if="youtube">
-		<iframe
-			class="youtube-video"
-			:src="safeUrl(getYouTubeVideoSource(youtube.split('/').pop()))"
-			:title="__('YouTube video')"
-			width="100%"
-			:height="screenSize.width < 640 ? 200 : 400"
-			frameborder="0"
-			allowfullscreen
-		></iframe>
->>>>>>> origin/feat/Billing
 	</div>
 	<!-- Keyed on the block text, not just the index: position N of the outgoing
 	     lesson and position N of the incoming one share an index, so Vue reuses
@@ -28,7 +15,6 @@
 		:key="`${index}:${block}`"
 	>
 		<div v-if="block.includes('{{ YouTubeVideo')">
-<<<<<<< HEAD
 			<div
 				v-if="youtubeEmbedId(getId(block))"
 				:key="youtubeEmbedId(getId(block))"
@@ -36,17 +22,6 @@
 				data-plyr-provider="youtube"
 				:data-plyr-embed-id="youtubeEmbedId(getId(block))"
 			></div>
-=======
-			<iframe
-				class="youtube-video"
-				:src="safeUrl(getYouTubeVideoSource(block))"
-				:title="__('YouTube video')"
-				width="100%"
-				:height="screenSize.width < 640 ? 200 : 400"
-				frameborder="0"
-				allowfullscreen
-			></iframe>
->>>>>>> origin/feat/Billing
 		</div>
 		<div v-else-if="block.includes('{{ Quiz')">
 			<Quiz :quiz="getId(block)" />
@@ -99,19 +74,10 @@
 import Quiz from '@/components/QuizBlock.vue'
 import PdfBlock from '@/components/PdfBlock.vue'
 import MarkdownIt from 'markdown-it'
-<<<<<<< HEAD
 import { extractYoutubeID, getMacroArg } from '@/utils/lessonMacros'
 import { usesWebkitPdfViewer } from '@/utils/pdfViewer'
 import { safeUrl } from '@/utils/safeUrl'
 
-=======
-import { useScreenSize } from '@/utils/composables'
-import { getMacroArg } from '@/utils/lessonMacros'
-import { usesWebkitPdfViewer } from '@/utils/pdfViewer'
-import { safeUrl } from '@/utils/safeUrl'
-
-const screenSize = useScreenSize()
->>>>>>> origin/feat/Billing
 const inlinePdf = usesWebkitPdfViewer()
 
 const markdown = new MarkdownIt({
@@ -138,22 +104,11 @@ const props = defineProps({
 	},
 })
 
-<<<<<<< HEAD
-=======
-const getYouTubeVideoSource = (block) => {
-	if (block.includes('{{')) {
-		block = getId(block)
-	}
-	return `https://www.youtube.com/embed/${block}`
-}
-
->>>>>>> origin/feat/Billing
 const getId = (block) => {
 	// Guard the match: a malformed `{{ PDF() }}` / unbalanced-quote macro yields
 	// null, and the old unguarded [1] threw and killed the whole lesson render.
 	return getMacroArg(block) ?? ''
 }
-<<<<<<< HEAD
 
 // Both authoring paths (the `youtube` field and the `{{ YouTubeVideo }}` macro)
 // must land in the same Plyr-wrapped `.video-player` the EditorJS embed block
@@ -162,6 +117,4 @@ const getId = (block) => {
 // Falsy id => render nothing rather than a Plyr player with no video, which
 // would suppress the dwell timer and leave the lesson uncompletable.
 const youtubeEmbedId = (source) => (source ? extractYoutubeID(source) : '')
-=======
->>>>>>> origin/feat/Billing
 </script>

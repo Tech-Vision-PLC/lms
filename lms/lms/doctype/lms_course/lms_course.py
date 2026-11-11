@@ -10,6 +10,7 @@ from frappe.model.document import Document
 from frappe.utils import cint, flt, today
 
 from ...utils import (
+	can_modify_course,
 	generate_slug,
 	get_average_rating,
 	get_instructors,
@@ -22,6 +23,14 @@ from ...utils import (
 
 class LMSCourse(Document):
 	def validate(self):
+		if not self.is_new() and not can_modify_course(
+			self.name, user=frappe.session.user
+		):
+			frappe.throw(
+				_("You do not have permission to modify this course."),
+				frappe.PermissionError,
+			)
+
 		self.validate_published()
 		self.validate_instructors()
 		self.validate_video_link()
@@ -146,6 +155,158 @@ class LMSCourse(Document):
 	def __repr__(self):
 		return f"<Course#{self.name}>"
 
+
+class LMSCourse(Document):
+	def validate(self):
+		if not self.is_new() and not can_modify_course(
+			self.name, user=frappe.session.user
+		):
+			frappe.throw(
+				_("You do not have permission to modify this course."),
+				frappe.PermissionError,
+			)
+
+		self.validate_published()
+		self.validate_instructors()
+		self.validate_video_link()
+		self.validate_status()
+		self.validate_payments_app()
+		self.validate_certification()
+		self.validate_amount_and_currency()
+		self.image = validate_image(self.image)
+		self.validate_card_gradient()
+
+	def validate_published(self):
+		if not self.published:
+			return
+		if self.is_new() or self.has_value_changed("published") or not self.published_on:
+			self.published_on = today()
+
+	def validate_instructors(self):
+		if self.is_new() and not self.instructors:
+			frappe.get_doc(
+				{
+					"doctype": "Course Instructor",
+					"instructor": self.owner,
+					"parent": self.name,
+					"parentfield": "instructors",
+					"parenttype": "LMS Course",
+				}
+			).save(ignore_permissions=True)
+
+	def validate_video_link(self):
+		# Store video_link exactly as entered: a YouTube/Vimeo link or an uploaded
+		# file path. The frontend normalizes links for rendering (it handles full
+		# URLs and bare ids alike), so there's no need to strip URLs down to a bare
+		# id here. Stripping was lossy: it mangled uploaded /files paths and turned
+		# some YouTube urls into ids that don't round-trip cleanly.
+		return
+
+	def validate_status(self):
+		if self.published:
+			self.status = "Approved"
+
+	def validate_payments_app(self):
+		if self.paid_course:
+			installed_apps = frappe.get_installed_apps()
+			if "payments" not in installed_apps:
+				documentation_link = "https://docs.frappe.io/learning/setting-up-payment-gateway"
+				frappe.throw(
+					_(
+						"Please install the Payments App to create a paid course. Refer to the documentation for more details. {0}"
+					).format(documentation_link)
+				)
+
+	def validate_certification(self):
+		if self.enable_certification and self.paid_certificate:
+			frappe.throw(_("A course cannot have both paid certificate and certificate of completion."))
+
+		if self.paid_certificate and not self.evaluator:
+			frappe.throw(_("Evaluator is required for paid certificates."))
+
+		if self.paid_certificate and not self.timezone:
+			frappe.throw(_("Timezone is required for paid certificates."))
+
+	def validate_amount_and_currency(self):
+		if self.paid_course and (cint(self.course_price) <= 0 or not self.currency):
+			frappe.throw(_("Amount and currency are required for paid courses."))
+
+		if self.paid_certificate and (cint(self.course_price) <= 0 or not self.currency):
+			frappe.throw(_("Amount and currency are required for paid certificates."))
+
+	def validate_card_gradient(self):
+		if not self.image and not self.card_gradient:
+			colors = [
+				"Red",
+				"Blue",
+				"Green",
+				"Yellow",
+				"Orange",
+				"Pink",
+				"Amber",
+				"Violet",
+				"Cyan",
+				"Teal",
+				"Gray",
+				"Purple",
+			]
+			self.card_gradient = random.choice(colors)
+
+	def on_update(self):
+		if not self.upcoming and self.has_value_changed("upcoming"):
+			self.send_email_to_interested_users()
+
+	def on_payment_authorized(self, payment_status):
+		if payment_status in ["Authorized", "Completed"]:
+			update_payment_record("LMS Course", self.name)
+
+	def send_email_to_interested_users(self):
+		interested_users = frappe.get_all("LMS Course Interest", {"course": self.name}, ["name", "user"])
+		subject = self.title + " is available!"
+		args = {
+			"title": self.title,
+			"course_link": get_lms_route(f"courses/{self.name}"),
+			"app_name": frappe.db.get_single_value("System Settings", "app_name"),
+			"site_url": frappe.utils.get_url(),
+		}
+
+		for user in interested_users:
+			args["first_name"] = frappe.db.get_value("User", user.user, "first_name")
+			email_args = frappe._dict(
+				recipients=user.user,
+				subject=subject,
+				header=[subject, "green"],
+				template="lms_course_interest",
+				args=args,
+				now=True,
+			)
+			frappe.enqueue(method=frappe.sendmail, queue="short", timeout=300, is_async=True, **email_args)
+			frappe.db.set_value("LMS Course Interest", user.name, "email_sent", True)
+
+	def autoname(self):
+		if not self.name:
+			self.name = generate_slug(self.title, "LMS Course")
+
+	def __repr__(self):
+		return f"<Course#{self.name}>"
+
+
+def has_permission(doc, ptype="read", user=None):
+    user = user or frappe.session.user
+
+    # Allow native Frappe permission checks to handle read and create.
+    if ptype not in ("write", "delete", "submit", "cancel", "amend"):
+        return True
+
+    # Administrator retains full access.
+    if user == "Administrator":
+        return True
+
+    # A document must exist before its course-level permissions can be checked.
+    if not doc or not doc.name:
+        return False
+
+    return can_modify_course(doc.name, user=user)
 
 def send_notification_for_published_courses():
 	send_notification = frappe.db.get_single_value("LMS Settings", "send_notification_for_published_courses")

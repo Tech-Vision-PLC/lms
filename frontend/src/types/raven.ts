@@ -7,14 +7,10 @@
 // in `@/utils/raven/constants`; this module stays free of runtime values so the
 // `@/types` barrel pulls no code into its importers' chunks.
 
-<<<<<<< HEAD
 /** What a group joins its children with. One per gap between two conditions. */
 export type Conjunction = 'and' | 'or'
 export type WorkspaceVisibility = 'Public' | 'Private'
 export type ChannelVisibility = 'Public' | 'Private' | 'Open'
-=======
-export type RuleCombinator = 'Any (OR)' | 'All (AND)'
->>>>>>> origin/feat/Billing
 export type RuleStatus = 'Active' | 'Paused'
 
 export interface RavenWorkspace {
@@ -23,7 +19,6 @@ export interface RavenWorkspace {
 	/** False when this is a raw Raven workspace not yet adopted into a mapping. */
 	mapped: boolean
 	workspace_label: string
-<<<<<<< HEAD
 	workspace_type: WorkspaceVisibility
 	/** Always present: the Raven workspace id, mapped or not; the adopt target. */
 	raven_workspace: string
@@ -31,15 +26,6 @@ export interface RavenWorkspace {
 	stale: 0 | 1
 	/** Channel mappings under this workspace; null when nothing is managed yet. */
 	channel_count?: number | null
-=======
-	workspace_type: 'Public' | 'Private'
-	rule_combinator: RuleCombinator | null
-	/** Always present: the Raven workspace id, mapped or not; the adopt target. */
-	raven_workspace: string
-	enabled: 0 | 1
-	/** The linked Raven workspace no longer exists; the mapping has stopped syncing. */
-	stale: 0 | 1
->>>>>>> origin/feat/Billing
 }
 
 export interface RavenChannel {
@@ -49,12 +35,7 @@ export interface RavenChannel {
 	mapped: boolean
 	channel_label: string
 	workspace: string
-<<<<<<< HEAD
 	channel_type: ChannelVisibility
-=======
-	channel_type: 'Public' | 'Private' | 'Open'
-	rule_combinator: RuleCombinator | null
->>>>>>> origin/feat/Billing
 	/** Always present: the Raven channel id, mapped or not; the adopt target. */
 	raven_channel: string
 	enabled: 0 | 1
@@ -63,7 +44,6 @@ export interface RavenChannel {
 }
 
 export interface WorkspaceDetail extends RavenWorkspace {
-<<<<<<< HEAD
 	/** Derived: how many people are in at least one of the workspace's channels. */
 	member_count: number
 	channels_active: number
@@ -84,15 +64,10 @@ export interface WorkspaceMember {
 	channels: string[]
 	/** At least one of those channel memberships was created by a rule. */
 	added_by_rule: boolean
-=======
-	member_count: number
-	member_rules: ApiRule[]
->>>>>>> origin/feat/Billing
 }
 
 export interface ChannelDetail extends RavenChannel {
 	member_count: number
-<<<<<<< HEAD
 	/**
 	 * The count above could not be worked out, no provider could evaluate the
 	 * channel's tree, so it reads 0 rather than a real total. Kept an int with a
@@ -142,11 +117,6 @@ export type RuleNode = RavenMemberRule | RuleGroup
 /** Child indices from the root of a tree. `[]` addresses the root itself. */
 export type RulePath = number[]
 
-=======
-	member_rules: ApiRule[]
-}
-
->>>>>>> origin/feat/Billing
 /** Generic membership rule as the raven_integration API sends/accepts it on the wire. */
 export interface ApiRule {
 	name?: string
@@ -170,7 +140,6 @@ export interface RuleDiff {
 	added: number
 	removed: number
 	removed_users: string[]
-<<<<<<< HEAD
 	/**
 	 * No provider could evaluate the proposed tree, so the counts above are zero
 	 * because nothing could be worked out, not because nobody moves. A channel
@@ -178,8 +147,6 @@ export interface RuleDiff {
 	 * false: those genuinely move nobody.
 	 */
 	unknown: boolean
-=======
->>>>>>> origin/feat/Billing
 }
 
 /** Every value a provider-declared field can hold. */
@@ -191,16 +158,12 @@ export interface RuleField {
 	fieldtype: string
 	/** On-screen wording; falls back to the fieldname when the provider omits it. */
 	label?: string
-<<<<<<< HEAD
 	/** Declarable, but the condition row does not render it. See RuleConditionField. */
-=======
->>>>>>> origin/feat/Billing
 	description?: string
 	/** A literal option list for `Select`; a doctype name for `MultiSelect`. */
 	options?: string | string[]
 	reqd?: 0 | 1
 	default?: string
-<<<<<<< HEAD
 	/**
 	 * Renders this field only while `field` holds one of the named values.
 	 *
@@ -214,8 +177,6 @@ export interface RuleField {
 	depends_on?:
 		| { field: string; value: string }
 		| { field: string; value_in: string[] }
-=======
->>>>>>> origin/feat/Billing
 }
 
 export interface ProviderRuleType {

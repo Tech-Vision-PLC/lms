@@ -1,10 +1,6 @@
 import { createResource } from 'frappe-ui'
 import { computed, type ComputedRef } from 'vue'
-<<<<<<< HEAD
 import { LMS_PROVIDER, isWireKey } from '@/utils/raven/ruleAdapter'
-=======
-import { LMS_PROVIDER } from '@/utils/raven/ruleAdapter'
->>>>>>> origin/feat/Billing
 import type {
 	ProviderDeclaration,
 	ProviderRuleType,
@@ -13,15 +9,7 @@ import type {
 	RuleFieldValue,
 } from '@/types'
 
-<<<<<<< HEAD
 /** The declaration fetch itself, shared through `cache` so every rule card reads one instance. */
-=======
-/**
- * The declaration fetch itself, for callers that must tell "not loaded yet" from
- * "declares nothing". The declaration is static for the session and every rule card
- * wants it, so the shared `cache` key hands them all one instance.
- */
->>>>>>> origin/feat/Billing
 export function useProviderDeclarations() {
 	return createResource<ProviderDeclaration[]>({
 		url: 'raven_integration.api.list_providers',
@@ -30,7 +18,6 @@ export function useProviderDeclarations() {
 	})
 }
 
-<<<<<<< HEAD
 /** The rule types one provider declares. Pure: retyping a rule needs the provider it moves to. */
 export function ruleTypesOf(
 	declarations: readonly ProviderDeclaration[] | null | undefined,
@@ -39,14 +26,11 @@ export function ruleTypesOf(
 	return (declarations ?? []).find((p) => p.name === provider)?.rule_types ?? []
 }
 
-=======
->>>>>>> origin/feat/Billing
 /** The rule types a provider declares. Empty while the fetch is in flight or failed. */
 export function useProviderRuleTypes(
 	provider: () => string
 ): ComputedRef<ProviderRuleType[]> {
 	const providers = useProviderDeclarations()
-<<<<<<< HEAD
 	return computed(() => ruleTypesOf(providers.data, provider()))
 }
 
@@ -71,12 +55,6 @@ export function useRuleTypeChoices(): ComputedRef<RuleTypeChoice[]> {
 			}))
 		)
 	)
-=======
-	return computed(() => {
-		const declared = providers.data ?? []
-		return declared.find((p) => p.name === provider())?.rule_types ?? []
-	})
->>>>>>> origin/feat/Billing
 }
 
 /** The fields a rule type declares, or none when the provider does not declare it. */
@@ -87,7 +65,6 @@ export function fieldsOf(
 	return ruleTypes.find((rt) => rt.type === ruleType)?.fields ?? []
 }
 
-<<<<<<< HEAD
 /**
  * The declared fields whose `depends_on` is satisfied, in declaration order.
  * Hidden means hidden everywhere: not rendered, not judged for `reqd`, not
@@ -169,8 +146,6 @@ export function hasUndeclaredFields(
 	)
 }
 
-=======
->>>>>>> origin/feat/Billing
 /** Whether the declaration covers this rule type at all; false while it is unloaded. */
 export function isDeclaredRuleType(
 	ruleTypes: readonly ProviderRuleType[],
@@ -195,11 +170,7 @@ export function hasRequiredFields(
 	rule: RavenMemberRule
 ): boolean {
 	if (!isDeclaredRuleType(ruleTypes, rule.rule_type)) return false
-<<<<<<< HEAD
 	return visibleFieldsOf(ruleTypes, rule).every(
-=======
-	return fieldsOf(ruleTypes, rule.rule_type).every(
->>>>>>> origin/feat/Billing
 		(field) => !field.reqd || isFilled(rule[field.fieldname])
 	)
 }
@@ -220,7 +191,6 @@ export function defaultsOf(
 export function isForeignRule(rule: RavenMemberRule): boolean {
 	return !!rule.provider && rule.provider !== LMS_PROVIDER
 }
-<<<<<<< HEAD
 
 /**
  * Fieldtypes whose control gets a row to itself: the doctype-backed multiselect
@@ -290,5 +260,3 @@ export function autoRuleLabel(
 		? `${base} · ${qualifier}`
 		: base
 }
-=======
->>>>>>> origin/feat/Billing

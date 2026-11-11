@@ -186,10 +186,7 @@ const updateCourseData = (): void => {
 		'published',
 		'upcoming',
 		'disable_self_learning',
-<<<<<<< HEAD
 		'enforce_lesson_completion',
-=======
->>>>>>> origin/feat/Billing
 		'paid_course',
 		'featured',
 		'enable_certification',

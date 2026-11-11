@@ -29,7 +29,23 @@ let router = createRouter({
 	routes,
 })
 
+function captureReferralCode(to) {
+	const value = to.query?.ref
+	if (typeof value !== 'string') return
+
+	const code = value.trim().toUpperCase()
+	if (!/^REF-[A-Z0-9]{8}$/.test(code)) return
+
+	const secure = window.location.protocol === 'https:' ? '; Secure' : ''
+	document.cookie =
+		'lms_referral_code=' +
+		encodeURIComponent(code) +
+		'; Max-Age=2592000; Path=/; SameSite=Lax' +
+		secure
+}
+
 router.beforeEach(async (to, from, next) => {
+	captureReferralCode(to)
 	const { userResource } = usersStore()
 	let { isLoggedIn } = sessionStore()
 	const { settings } = useSettings()

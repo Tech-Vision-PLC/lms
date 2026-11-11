@@ -663,7 +663,6 @@ watch(
 	{ deep: true }
 )
 
-<<<<<<< HEAD
 const addInstructorLink = (links) => {
 	const user = userResource.data
 	// Moderators and approved instructors already have course access.
@@ -699,10 +698,6 @@ const addInstructorLink = (links) => {
 const updateSidebarLinks = () => {
 	sidebarLinks.value = getSidebarLinks()
 	addInstructorLink(sidebarLinks.value)
-=======
-const updateSidebarLinks = () => {
-	sidebarLinks.value = getSidebarLinks()
->>>>>>> origin/feat/Billing
 	updateSidebarLinksVisibility()
 	updateUnreadCount()
 }
@@ -755,8 +750,4 @@ const redirectToAppointmentScreen = () => {
 onUnmounted(() => {
 	socket.off('publish_lms_notifications')
 })
-<<<<<<< HEAD
 </script>
-=======
-</script>
->>>>>>> origin/feat/Billing

@@ -1,6 +1,5 @@
 <template>
 	<PageHeader :breadcrumbs="breadcrumbs" />
-<<<<<<< HEAD
 	<div v-if="isLocked" class="sm:border-e">
 		<LockedLessonNotice
 			:redirect="!!currentLessonNumber"
@@ -11,11 +10,6 @@
 		v-else-if="
 			readyToRender &&
 			outlineSettled &&
-=======
-	<div
-		v-if="
-			readyToRender &&
->>>>>>> origin/feat/Billing
 			(enrollment.data?.length ||
 				user.data?.is_moderator ||
 				user.data?.is_instructor)
@@ -54,21 +48,14 @@ import {
 	usePageMeta,
 } from 'frappe-ui'
 import { computed, inject, onBeforeMount, ref } from 'vue'
-<<<<<<< HEAD
 import { useRouter } from 'vue-router'
 import PageHeader from '@/components/Layouts/PageHeader.vue'
 import LockedLessonNotice from '@/components/LockedLessonNotice.vue'
-=======
-import PageHeader from '@/components/Layouts/PageHeader.vue'
->>>>>>> origin/feat/Billing
 import { useSidebar } from '@/stores/sidebar'
 import { sessionStore } from '../stores/session'
 import { safeUrl } from '@/utils/safeUrl'
 
-<<<<<<< HEAD
 const router = useRouter()
-=======
->>>>>>> origin/feat/Billing
 const { brand } = sessionStore()
 const sidebarStore = useSidebar()
 const user = inject('$user')
@@ -104,7 +91,6 @@ const chapter = createDocumentResource({
 	onSuccess(data) {
 		progress.submit()
 	},
-<<<<<<< HEAD
 	// `/learn/:chapterName` also matches a lesson URL with no lesson number, so a
 	// mistyped or tampered address resolves to a chapter that does not exist. Without
 	// this the page renders nothing at all.
@@ -178,10 +164,6 @@ const goToCurrentLesson = () => {
 	})
 }
 
-=======
-})
-
->>>>>>> origin/feat/Billing
 const enrollment = createListResource({
 	doctype: 'LMS Enrollment',
 	fields: ['member', 'course'],

@@ -32,11 +32,7 @@
 				</router-link>
 				<HeaderButton
 					v-if="quizDetails.doc?.name"
-<<<<<<< HEAD
 					:label="__('Delete')"
-=======
-					:label="__('Delete quiz')"
->>>>>>> origin/feat/Billing
 					icon="lucide-trash-2"
 					theme="red"
 					@click="deleteQuiz"
@@ -216,7 +212,6 @@
 					:label="__('Marks to Deduct')"
 					variant="outline"
 				/>
-<<<<<<< HEAD
 				<BooleanSwitch
 					v-model="quizDetails.doc.enable_proctoring"
 					size="sm"
@@ -238,8 +233,6 @@
 					variant="outline"
 					:required="true"
 				/>
-=======
->>>>>>> origin/feat/Billing
 			</div>
 		</div>
 	</div>
@@ -375,7 +368,6 @@ watch(
 	}
 )
 
-<<<<<<< HEAD
 watch(
 	() => quizDetails.doc?.enable_proctoring,
 	(enabled) => {
@@ -385,8 +377,6 @@ watch(
 	}
 )
 
-=======
->>>>>>> origin/feat/Billing
 const submitQuiz = (opts = {}) => {
 	// Nothing to save once the quiz has been deleted (doc is null). Guard so the
 	// autosave watcher and the onBeforeUnmount flush can't throw or re-insert it.
@@ -400,19 +390,10 @@ const submitQuiz = (opts = {}) => {
 		},
 		{
 			onSuccess(data) {
-<<<<<<< HEAD
 				console.log(data)
 				if (!opts.silent) toast.success(__('Quiz updated successfully'))
 			},
 			onError(err) {
-=======
-				quizDetails.doc.total_marks = data.total_marks
-				if (!opts.silent) toast.success(__('Quiz updated successfully'))
-			},
-			onError(err) {
-				// Autosave failures stay quiet; the orange "unsaved" badge remains
-				// so the change isn't silently lost.
->>>>>>> origin/feat/Billing
 				if (!opts.silent) toast.error(err.messages?.[0] || err)
 			},
 		}

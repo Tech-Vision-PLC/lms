@@ -2392,7 +2392,11 @@ def calculate_discount_amount(base_amount: float, coupon: dict) -> float:
 
 @frappe.whitelist()
 def get_lesson_creation_details(course: str, chapter: int, lesson: int) -> dict:
-	frappe.only_for(["Moderator", "Course Creator"])
+	if not can_modify_course(course):
+		frappe.throw(
+			_("You do not have permission to modify this course."),
+			frappe.PermissionError,
+		)
 	chapter_name = frappe.db.get_value("Chapter Reference", {"parent": course, "idx": chapter}, "chapter")
 	lesson_name = frappe.db.get_value("Lesson Reference", {"parent": chapter_name, "idx": lesson}, "lesson")
 
@@ -3076,14 +3080,22 @@ def validate_batch_access(batch: str):
 		frappe.throw(_("You do not have access to this batch."))
 
 
-def can_modify_course(course: str) -> bool:
+def can_modify_course(course: str, user: str | None = None) -> bool:
+	user = user or frappe.session.user
+
+	if user == "Administrator":
+		return True
+
 	is_instructor = frappe.db.exists(
 		"Course Instructor",
-		{"instructor": frappe.session.user, "parent": course, "parenttype": "LMS Course"},
+		{
+			"instructor": user,
+			"parent": course,
+			"parenttype": "LMS Course",
+		},
 	)
-	if not (has_moderator_role() or is_instructor):
-		return False
-	return True
+
+	return bool(has_moderator_role(user) or is_instructor)
 
 
 def can_modify_batch(batch: str) -> bool:

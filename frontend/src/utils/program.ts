@@ -7,10 +7,6 @@ import { call } from 'frappe-ui'
 import { usersStore } from '@/stores/user'
 import { getLmsRoute } from '@/utils/basePath'
 import { blockNotice, embedFrame } from '@/utils/blockDom'
-<<<<<<< HEAD
-=======
-import { dsaProblemUrl, type ProgramSelection } from '@/utils/dsa'
->>>>>>> origin/feat/Billing
 
 export class Program {
 	data: any
@@ -61,13 +57,7 @@ export class Program {
 
 	render() {
 		this.wrapper = document.createElement('div')
-<<<<<<< HEAD
 		if (Object.keys(this.data).length) {
-=======
-		if (this.data.dsa_problem) {
-			this.renderDSAProblem(this.data.dsa_problem)
-		} else if (this.data.exercise) {
->>>>>>> origin/feat/Billing
 			this.renderExercise(this.data.exercise)
 		} else {
 			this.renderModal()
@@ -80,17 +70,9 @@ export class Program {
 			return
 		}
 		const app = createApp(ProgrammingExerciseModal, {
-<<<<<<< HEAD
 			onSave: (exercise: string) => {
 				this.data.exercise = exercise
 				this.renderExercise(exercise)
-=======
-			onSave: (selection: ProgramSelection) => {
-				this.data = selection
-				if ('dsa_problem' in selection)
-					this.renderDSAProblem(selection.dsa_problem)
-				else this.renderExercise(selection.exercise)
->>>>>>> origin/feat/Billing
 			},
 		})
 		registerDirectives(app)
@@ -98,31 +80,6 @@ export class Program {
 		app.mount(this.wrapper)
 	}
 
-<<<<<<< HEAD
-=======
-	renderDSAProblem(problem: string) {
-		if (this.readOnly) {
-			const frame = embedFrame(dsaProblemUrl(problem, true), {
-				class: 'w-full h-[900px] border rounded-md',
-				title: __('DSA Programming Exercise'),
-			})
-			this.wrapper.replaceChildren(...(frame ? [frame] : []))
-			return
-		}
-		call('dsa.api.get_problem', { name: problem })
-			.then((data: { title: string }) => {
-				this.wrapper.replaceChildren(
-					blockNotice(__('DSA Problem: {0}').format(data.title)),
-				)
-			})
-			.catch(() => {
-				this.wrapper.replaceChildren(
-					blockNotice(__('Could not load the attached DSA problem.')),
-				)
-			})
-	}
-
->>>>>>> origin/feat/Billing
 	renderExercise(exercise: string) {
 		if (this.readOnly) {
 			const { userResource } = usersStore()
@@ -137,11 +94,7 @@ export class Program {
 				let submission = data.name || 'new'
 				const studentView = this.studentView ? '&studentView=1' : ''
 				const submissionPath = getLmsRoute(
-<<<<<<< HEAD
 					`programming-exercises/${exercise}/submission/${submission}?fromLesson=1${studentView}`
-=======
-					`programming-exercises/${exercise}/submission/${submission}?fromLesson=1${studentView}`,
->>>>>>> origin/feat/Billing
 				)
 				const frame = embedFrame(submissionPath, {
 					class: 'w-full h-[900px] border rounded-md',
@@ -158,21 +111,13 @@ export class Program {
 			fieldname: 'title',
 		}).then((data: { title: string }) => {
 			this.wrapper.replaceChildren(
-<<<<<<< HEAD
 				blockNotice(`Programming Exercise: ${data.title}`)
-=======
-				blockNotice(`Programming Exercise: ${data.title}`),
->>>>>>> origin/feat/Billing
 			)
 			return
 		})
 	}
 
 	save() {
-<<<<<<< HEAD
-=======
-		if (this.data.dsa_problem) return { dsa_problem: this.data.dsa_problem }
->>>>>>> origin/feat/Billing
 		if (!this.data.exercise) return {}
 		return {
 			exercise: this.data.exercise,

@@ -1,10 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import ChapterRow from '@/components/ChapterRow.vue'
-<<<<<<< HEAD
 import type { OutlineChapter } from '@/types'
-=======
->>>>>>> origin/feat/Billing
 
 const pushMock = vi.hoisted(() => vi.fn())
 
@@ -52,11 +49,7 @@ vi.mock('vuedraggable', () => ({
 
 vi.stubGlobal('__', (s: string) => s)
 
-<<<<<<< HEAD
 const chapter: OutlineChapter = {
-=======
-const chapter = {
->>>>>>> origin/feat/Billing
 	name: 'CH-2',
 	title: 'Old Chapter',
 	idx: 2,
@@ -64,17 +57,10 @@ const chapter = {
 	lessons: [{ name: 'LESSON-1', title: 'Lesson 1', number: '2-1' }],
 }
 
-<<<<<<< HEAD
 const mountRow = (chapterOverride: OutlineChapter = chapter) =>
 	mount(ChapterRow, {
 		props: {
 			chapter: chapterOverride,
-=======
-const mountRow = () =>
-	mount(ChapterRow, {
-		props: {
-			chapter,
->>>>>>> origin/feat/Billing
 			index: 1,
 			courseName: 'course-1',
 			allowEdit: true,
@@ -82,12 +68,9 @@ const mountRow = () =>
 		global: {
 			mocks: { __: (s: string) => s },
 			provide: { $user: { data: { name: 'admin@example.com' } } },
-<<<<<<< HEAD
 			stubs: {
 				'router-link': { template: '<a><slot /></a>' },
 			},
-=======
->>>>>>> origin/feat/Billing
 		},
 	})
 
@@ -112,7 +95,6 @@ describe('ChapterRow inline rename', () => {
 		expect(wrapper.text()).not.toContain('Lesson 1')
 	})
 })
-<<<<<<< HEAD
 
 describe('ChapterRow locked lesson', () => {
 	it('renders a lock and no router-link for a locked lesson', () => {
@@ -233,5 +215,3 @@ describe('ChapterRow locked lesson', () => {
 		expect(wrapper.emitted('select-lesson')).toBeUndefined()
 	})
 })
-=======
->>>>>>> origin/feat/Billing

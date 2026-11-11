@@ -18,7 +18,6 @@
   "payment_for_certificate",
   "member_consent",
   "payment_details_section",
-  "chapa_tx_ref",
   "original_amount",
   "discount_amount",
   "amount",
@@ -45,12 +44,6 @@
    "fieldname": "payment_id",
    "fieldtype": "Data",
    "label": "Payment ID"
-  },
-  {
-   "fieldname": "chapa_tx_ref",
-   "fieldtype": "Data",
-   "label": "Chapa Transaction Reference",
-   "read_only": 1
   },
   {
    "fieldname": "amount",

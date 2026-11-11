@@ -33,13 +33,8 @@ vi.mock('frappe-ui', () => ({
 	},
 	LoadingIndicator: { template: `<span data-testid="spinner" />` },
 	Switch: {
-<<<<<<< HEAD
 		props: ['modelValue'],
 		template: `<button data-testid="switch" @click="$emit('update:modelValue', !modelValue)"><slot name="label" /></button>`,
-=======
-		props: ['modelValue', 'ariaLabel'],
-		template: `<button data-testid="switch" :aria-label="ariaLabel" @click="$emit('update:modelValue', !modelValue)" />`,
->>>>>>> origin/feat/Billing
 	},
 }))
 
@@ -155,17 +150,11 @@ describe('SettingsList', () => {
 		expect(wrapper.get('[data-testid="avatar"]').attributes('data-label')).toBe(
 			'Marketing'
 		)
-<<<<<<< HEAD
 		// Named through the slot the component wires to its control, and named
 		// without adding a visible word to a column whose header already has one.
 		const name = wrapper.get('[data-testid="switch"] span')
 		expect(name.text()).toBe('Enable Marketing')
 		expect(name.classes()).toContain('sr-only')
-=======
-		expect(wrapper.get('[data-testid="switch"]').attributes('aria-label')).toBe(
-			'Enable Marketing'
-		)
->>>>>>> origin/feat/Billing
 	})
 
 	it('drops the second line when a stacked column has no secondary', () => {
@@ -192,7 +181,6 @@ describe('SettingsList', () => {
 		}
 	})
 
-<<<<<<< HEAD
 	it('keeps the header in the same scroller as the rows', () => {
 		// Not a stylistic preference. The header and the rows are separate grid
 		// containers sharing one `--list-columns` track list, so they only line up
@@ -211,8 +199,6 @@ describe('SettingsList', () => {
 		expect(wrapper.get('[data-testid="header"]').classes()).toContain('sticky')
 	})
 
-=======
->>>>>>> origin/feat/Billing
 	it('opens the row on click', async () => {
 		const wrapper = build()
 

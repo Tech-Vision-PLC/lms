@@ -26,19 +26,12 @@ declare module 'vue' {
     BrandSettings: typeof import('./src/components/Settings/BrandSettings.vue')['default']
     Categories: typeof import('./src/components/Settings/Categories.vue')['default']
     CertificationLinks: typeof import('./src/components/CertificationLinks.vue')['default']
-<<<<<<< HEAD
     ChannelView: typeof import('./src/components/Settings/Raven/ChannelView.vue')['default']
-=======
-    ChannelsView: typeof import('./src/components/Settings/Raven/ChannelsView.vue')['default']
->>>>>>> origin/feat/Billing
     ChapterRow: typeof import('./src/components/ChapterRow.vue')['default']
     ChildTable: typeof import('./src/components/Controls/ChildTable.vue')['default']
     ClearableCombobox: typeof import('./src/components/Controls/ClearableCombobox.vue')['default']
     CodeEditor: typeof import('./src/components/Controls/CodeEditor.vue')['default']
-<<<<<<< HEAD
     CodingProblem: typeof import('./src/components/CodingProblem.vue')['default']
-=======
->>>>>>> origin/feat/Billing
     CollapseSidebar: typeof import('./src/components/Icons/CollapseSidebar.vue')['default']
     CollapsibleSection: typeof import('./src/components/CollapsibleSection.vue')['default']
     ColorSwatches: typeof import('./src/components/Controls/ColorSwatches.vue')['default']
@@ -66,10 +59,6 @@ declare module 'vue' {
     DiscussionModal: typeof import('./src/components/Modals/DiscussionModal.vue')['default']
     DiscussionReplies: typeof import('./src/components/DiscussionReplies.vue')['default']
     Discussions: typeof import('./src/components/Discussions.vue')['default']
-<<<<<<< HEAD
-=======
-    DSAProblemPicker: typeof import('./src/components/Controls/DSAProblemPicker.vue')['default']
->>>>>>> origin/feat/Billing
     EditCoverImage: typeof import('./src/components/Modals/EditCoverImage.vue')['default']
     EmailAccountList: typeof import('./src/components/Settings/EmailAccount/EmailAccountList.vue')['default']
     EmailAdd: typeof import('./src/components/Settings/EmailAccount/EmailAdd.vue')['default']
@@ -103,27 +92,16 @@ declare module 'vue' {
     ListPage: typeof import('./src/components/Layouts/ListPage.vue')['default']
     LiveClassAttendance: typeof import('./src/components/Modals/LiveClassAttendance.vue')['default']
     LMSLogo: typeof import('./src/components/Icons/LMSLogo.vue')['default']
-<<<<<<< HEAD
     LockedLessonNotice: typeof import('./src/components/LockedLessonNotice.vue')['default']
-=======
->>>>>>> origin/feat/Billing
     LucideChevronLeft: typeof import('~icons/lucide/chevron-left')['default']
     LucideChevronRight: typeof import('~icons/lucide/chevron-right')['default']
     LucideStar: typeof import('~icons/lucide/star')['default']
     LucideX: typeof import('~icons/lucide/x')['default']
-<<<<<<< HEAD
-=======
-    MappingListTable: typeof import('./src/components/Settings/Raven/MappingListTable.vue')['default']
-    MappingRules: typeof import('./src/components/Settings/Raven/MappingRules.vue')['default']
->>>>>>> origin/feat/Billing
     MassRemovalConfirmDialog: typeof import('./src/components/Settings/Raven/MassRemovalConfirmDialog.vue')['default']
     Members: typeof import('./src/components/Settings/Members.vue')['default']
     MobileLayout: typeof import('./src/components/Layouts/MobileLayout.vue')['default']
     MobilePageLayout: typeof import('./src/components/Layouts/MobilePageLayout.vue')['default']
-<<<<<<< HEAD
     MonacoEditor: typeof import('./src/components/MonacoEditor.vue')['default']
-=======
->>>>>>> origin/feat/Billing
     MultiLink: typeof import('./src/components/Controls/MultiLink.vue')['default']
     MultiSelect: typeof import('./src/components/Controls/MultiSelect.vue')['default']
     NewMemberModal: typeof import('./src/components/Modals/NewMemberModal.vue')['default']
@@ -145,37 +123,24 @@ declare module 'vue' {
     PersonaTextStep: typeof import('./src/components/Persona/PersonaTextStep.vue')['default']
     PersonaToolIcon: typeof import('./src/components/PersonaToolIcon.vue')['default']
     Play: typeof import('./src/components/Icons/Play.vue')['default']
-<<<<<<< HEAD
     ProctoringMonitor: typeof import('./src/components/ProctoringMonitor.vue')['default']
-=======
->>>>>>> origin/feat/Billing
     ProgrammingExerciseModal: typeof import('./src/components/Modals/ProgrammingExerciseModal.vue')['default']
     ProgramProgressSummary: typeof import('./src/components/Programs/ProgramProgressSummary.vue')['default']
     ProgressBar: typeof import('./src/components/ProgressBar.vue')['default']
     Quiz: typeof import('./src/components/Quiz.vue')['default']
     QuizBlock: typeof import('./src/components/QuizBlock.vue')['default']
     QuizInVideo: typeof import('./src/components/Modals/QuizInVideo.vue')['default']
-<<<<<<< HEAD
     RavenSettings: typeof import('./src/components/Settings/Raven/RavenSettings.vue')['default']
     RavenSetupRow: typeof import('./src/components/Settings/Raven/RavenSetupRow.vue')['default']
-=======
-    RavenNotInstalledBanner: typeof import('./src/components/Settings/Raven/RavenNotInstalledBanner.vue')['default']
-    RavenSettings: typeof import('./src/components/Settings/Raven/RavenSettings.vue')['default']
->>>>>>> origin/feat/Billing
     RelatedCourses: typeof import('./src/components/RelatedCourses.vue')['default']
     ResponsiveListView: typeof import('./src/components/ResponsiveListView.vue')['default']
     ReviewModal: typeof import('./src/components/Modals/ReviewModal.vue')['default']
     RichTextEditor: typeof import('./src/components/RichTextEditor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-<<<<<<< HEAD
     RuleCondition: typeof import('./src/components/Settings/Raven/RuleCondition.vue')['default']
     RuleConditionField: typeof import('./src/components/Settings/Raven/RuleConditionField.vue')['default']
     RuleConditions: typeof import('./src/components/Settings/Raven/RuleConditions.vue')['default']
-=======
-    RuleEditor: typeof import('./src/components/Settings/Raven/RuleEditor.vue')['default']
-    RulesPanel: typeof import('./src/components/Settings/Raven/RulesPanel.vue')['default']
->>>>>>> origin/feat/Billing
     Select: typeof import('./src/components/Controls/Select.vue')['default']
     SettingDetails: typeof import('./src/components/Settings/SettingDetails.vue')['default']
     SettingFields: typeof import('./src/components/Settings/SettingFields.vue')['default']
@@ -185,10 +150,7 @@ declare module 'vue' {
     SettingsRow: typeof import('./src/components/Settings/Mobile/SettingsRow.vue')['default']
     SettingsRowGroup: typeof import('./src/components/Settings/Mobile/SettingsRowGroup.vue')['default']
     SettingsRowList: typeof import('./src/components/Settings/Mobile/SettingsRowList.vue')['default']
-<<<<<<< HEAD
     SettingsTable: typeof import('./src/components/Layouts/SettingsTable.vue')['default']
-=======
->>>>>>> origin/feat/Billing
     ShortcutTooltip: typeof import('./src/components/ShortcutTooltip.vue')['default']
     SidebarLink: typeof import('./src/components/Sidebar/SidebarLink.vue')['default']
     SkeletonLoader: typeof import('./src/components/SkeletonLoader.vue')['default']
@@ -199,10 +161,7 @@ declare module 'vue' {
     TransactionDetails: typeof import('./src/components/Settings/Transactions/TransactionDetails.vue')['default']
     TransactionList: typeof import('./src/components/Settings/Transactions/TransactionList.vue')['default']
     Transactions: typeof import('./src/components/Settings/Transactions/Transactions.vue')['default']
-<<<<<<< HEAD
     UnsavedChangesDialog: typeof import('./src/components/Settings/Raven/UnsavedChangesDialog.vue')['default']
-=======
->>>>>>> origin/feat/Billing
     UnsplashImageBrowser: typeof import('./src/components/UnsplashImageBrowser.vue')['default']
     UpcomingEvaluations: typeof import('./src/components/UpcomingEvaluations.vue')['default']
     Uploader: typeof import('./src/components/Controls/Uploader.vue')['default']
@@ -213,14 +172,10 @@ declare module 'vue' {
     VideoPreview: typeof import('./src/components/VideoPreview.vue')['default']
     VideoPreviewField: typeof import('./src/components/Controls/VideoPreviewField.vue')['default']
     VideoStatistics: typeof import('./src/components/Modals/VideoStatistics.vue')['default']
-<<<<<<< HEAD
     WorkspaceChannels: typeof import('./src/components/Settings/Raven/WorkspaceChannels.vue')['default']
     WorkspaceList: typeof import('./src/components/Settings/Raven/WorkspaceList.vue')['default']
     WorkspaceMembers: typeof import('./src/components/Settings/Raven/WorkspaceMembers.vue')['default']
     WorkspaceView: typeof import('./src/components/Settings/Raven/WorkspaceView.vue')['default']
-=======
-    WorkspaceList: typeof import('./src/components/Settings/Raven/WorkspaceList.vue')['default']
->>>>>>> origin/feat/Billing
     ZoomAccountForm: typeof import('./src/components/Settings/ZoomAccountForm.vue')['default']
     ZoomSettings: typeof import('./src/components/Settings/ZoomSettings.vue')['default']
   }

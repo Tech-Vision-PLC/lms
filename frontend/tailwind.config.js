@@ -1,7 +1,6 @@
 import frappeUIPreset from 'frappe-ui/tailwind'
 import { safeAreaPlugin } from './tailwind/safeArea.js'
 
-<<<<<<< HEAD
 // App code imports `@framework/ui` by name, through the package's `exports`.
 // Tailwind cannot: `content` takes globs over files, not module specifiers, and it
 // generates only the classes it finds there. Without the framework's source in this
@@ -15,18 +14,13 @@ import { safeAreaPlugin } from './tailwind/safeArea.js'
 // matching nothing is ignored, so both depths are listed rather than resolved: the
 // first is this app checked out at `apps/lms/frontend`, the second a git worktree of
 // it under `apps/lms/.lms-worktrees/<name>/frontend`, which is two levels deeper.
-=======
->>>>>>> origin/feat/Billing
 export default {
 	presets: [frappeUIPreset],
 	content: [
 		'./index.html',
 		'./src/**/*.{vue,js,ts,jsx,tsx}',
-<<<<<<< HEAD
 		'../../frappe/ui/src/**/*.{vue,js,ts,jsx,tsx}',
 		'../../../../frappe/ui/src/**/*.{vue,js,ts,jsx,tsx}',
-=======
->>>>>>> origin/feat/Billing
 		'./node_modules/frappe-ui/src/**/*.{vue,js,ts,jsx,tsx}',
 		'../node_modules/frappe-ui/src/**/*.{vue,js,ts,jsx,tsx}',
 		'./node_modules/frappe-ui/frappe/**/*.{vue,js,ts,jsx,tsx}',

@@ -403,20 +403,19 @@ export const routes = [
 		props: true,
 	},
 	{
-<<<<<<< HEAD
 		path: '/become-an-instructor',
 		name: 'BecomeAnInstructor',
 		component: () => import('@/pages/BecomeAnInstructor.vue'),
 	},
 	{
-=======
->>>>>>> origin/feat/Billing
+		path: '/referrals',
+		name: 'Referrals',
+		component: () => import('@/pages/Referrals.vue'),
+	},
+	{
 		path: '/:pathMatch(.*)*',
 		name: 'NotFound',
 		component: () => import('@/pages/NotFound.vue'),
 	},
-<<<<<<< HEAD
 	
-=======
->>>>>>> origin/feat/Billing
 ]

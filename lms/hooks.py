@@ -103,6 +103,7 @@ has_permission = {
 	"LMS Program": "lms.lms.doctype.lms_program.lms_program.has_permission",
 	"LMS Certificate": "lms.lms.doctype.lms_certificate.lms_certificate.has_permission",
 	"Course Lesson": "lms.lms.doctype.course_lesson.course_lesson.has_permission",
+	"LMS Course": "lms.lms.doctype.lms_course.lms_course.has_permission",
 	"File": "lms.lms.permissions.file_has_permission",
 }
 
@@ -132,6 +133,11 @@ doc_events = {
 	"User": {
 		"validate": "lms.lms.user.validate_username_duplicates",
 		"before_insert": "lms.lms.user.add_lms_student_role",
+		"after_insert": [
+            "lms.xp.create_user_xp",
+            "lms.referral.create_referral_code",
+            "lms.referral.attribute_new_user_from_referral",
+        ],
 	},
 }
 
@@ -306,8 +312,3 @@ raven_membership_providers = ["lms.raven_provider.get_provider"]
 # permissions its own doctypes need on install/migrate.
 raven_integration_manager_roles = ["Moderator"]
 
-doc_events = {
-    "User": {
-        "after_insert": "lms.xp.create_user_xp"
-    }
-}

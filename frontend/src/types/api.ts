@@ -84,10 +84,7 @@ export interface OutlineLesson {
 	number: string
 	icon?: string
 	is_complete?: boolean
-<<<<<<< HEAD
 	locked?: 0 | 1
-=======
->>>>>>> origin/feat/Billing
 }
 
 export interface OutlineChapter {

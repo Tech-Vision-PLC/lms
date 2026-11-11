@@ -9,6 +9,18 @@
 		doc-prop="course"
 	>
 		<template #actions="{ tab }">
+			<Button
+				v-if="course.data && (tab?.key === 'overview' || !isAdmin)"
+				variant="outline"
+				:loading="sharingCourse"
+				@click="shareCourse"
+			>
+				<template #prefix>
+					<span class="lucide-share-2 size-4" />
+				</template>
+				{{ __('Share Course') }}
+			</Button>
+
 			<template v-if="tab?.key === 'settings' && courseFormRef">
 				<Badge v-if="courseFormRef.isDirty" theme="orange">
 					{{ __('Not Saved') }}
@@ -114,7 +126,7 @@
 				{{ __('Enroll') }}
 			</Button>
 			<Button
-				v-if="tab?.key === 'settings' && user.data?.is_moderator && !isMobile"
+				v-if="tab?.key === 'settings' && isAdmin && !isMobile"
 				:variant="course.data?.published ? 'outline' : 'solid'"
 				:theme="course.data?.published ? 'red' : 'gray'"
 				:loading="publishToggle.loading"
@@ -194,11 +206,7 @@
 				<div
 					class="pointer-events-auto flex w-[30%] items-center justify-between gap-x-2 border-s border-b bg-surface-base p-1 px-5"
 				>
-<<<<<<< HEAD
 					<div class="py-2.5 text-p-base-medium text-ink-gray-9">
-=======
-					<div class="py-2.5 text-base-medium text-ink-gray-9">
->>>>>>> origin/feat/Billing
 						{{ __('Chapters') }}
 					</div>
 					<Button size="sm" @click="courseEditorRef?.openAddChapter()">
@@ -223,6 +231,7 @@ import type { Router } from 'vue-router'
 import {
 	Badge,
 	Button,
+	call,
 	createResource,
 	Dropdown,
 	Tooltip,
@@ -329,7 +338,7 @@ const publishToggle = createResource({
 // label. An icon-only globe gave no hint that it publishes the course.
 const courseOptions = computed<CourseMenuItem[]>(() => {
 	const menu = courseFormRef.value?.courseMenu ?? []
-	if (!isMobile.value || !user.data?.is_moderator) return menu
+	if (!isMobile.value || !isAdmin.value) return menu
 	return [
 		{
 			label: course.data?.published
@@ -344,6 +353,53 @@ const courseOptions = computed<CourseMenuItem[]>(() => {
 
 function togglePublishCourse() {
 	publishToggle.submit()
+}
+
+const sharingCourse = ref(false)
+
+async function shareCourse() {
+	if (!course.data?.name) {
+		toast.error(__('Course information is not available yet'))
+		return
+	}
+
+	sharingCourse.value = true
+
+	try {
+		// Start with the canonical course URL from Vue Router.
+		const courseRoute = router.resolve({
+			name: 'CourseDetail',
+			params: { courseName: course.data.name },
+		})
+
+		const shareUrl = new URL(courseRoute.href, window.location.origin)
+
+		// Append the current user's existing referral code when available.
+		if (user.data?.name) {
+			try {
+				const result = await call('lms.referral.get_my_referral_data')
+				const referralCode = result?.referral_code
+
+				if (referralCode) {
+					shareUrl.searchParams.set('ref', referralCode)
+				}
+			} catch (error) {
+				console.error('Could not load referral code:', error)
+			}
+		}
+
+		await navigator.clipboard.writeText(shareUrl.toString())
+		toast.success(__('Course link copied to clipboard'))
+	} catch (error) {
+		const message =
+			typeof error === 'string'
+				? error
+				: (error as { message?: string })?.message
+
+		toast.error(message || __('Could not copy the course link'))
+	} finally {
+		sharingCourse.value = false
+	}
 }
 
 // The enrollment form is a child route now, not a modal the dashboard tab owned,
