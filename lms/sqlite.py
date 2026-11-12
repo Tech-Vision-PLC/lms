@@ -8,7 +8,7 @@ from frappe.utils import get_datetime, getdate, nowdate
 class LearningSearch(SQLiteSearch):
 	INDEX_NAME = "learning.db"
 
-	INDEX_SCHEMA = {
+	INDEX_SCHEMA = { 
 		"metadata_fields": [
 			"owner",
 			"published",
